@@ -1,6 +1,7 @@
 local module = {};
 local APPLICATION_PATH = "";
 local APPLICATION_LAYOUT = "";
+local driver = require "luasql.sqlite3"
 
 function module.bootstrap(applicationPath, applicationLayout)
     APPLICATION_PATH = applicationPath;
