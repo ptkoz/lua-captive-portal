@@ -4,6 +4,8 @@ local Session = require "models.session";
 
 -- the login screen
 function indexController:index()
+    self.view.title = "Podaj token - FC Goście";
+
     if "POST" == os.getenv("REQUEST_METHOD") then
         local params = require "library.input".parse(indexController:fetchPostData());
 
@@ -38,11 +40,14 @@ end
 
 -- this message is shown when user successfully authenticates
 function indexController:success()
+    self.view.title = "Gotowe - FC Goście";
+
     self:enableBrowserCache();
 end
 
 -- this message is shown when user session expires
 function indexController:error()
+    self.view.title = "Sesja wygasła - FC Goście";
     self:enableBrowserCache();
 end
 
