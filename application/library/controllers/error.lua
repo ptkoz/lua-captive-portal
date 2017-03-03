@@ -1,8 +1,9 @@
-local controller = require "library.controllers.controller";
+-- Common error404 controller.
+local errorController = require "library.controllers.controller";
 
-function controller:error404()
+function errorController:error404()
     self:setResponseStatus("404 Not found");
 end;
 
-return controller;
+return errorController;
 

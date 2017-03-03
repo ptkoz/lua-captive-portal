@@ -1,13 +1,20 @@
+-- This module may be used as basis for application
+-- controllers. It can handle CGI headers, inputs
+-- templates, output buffering and some more.
 local template = require "resty.template";
 
 local Controller = {}
 Controller.__index = Controller;
 
+-- Controller's constructor.
 function Controller.new(script, layout)
     local self = setmetatable({}, Controller);
+
+    -- enable resty template rendering engine
     self.enableRender = true;
     self.view = template.new(script, layout);
 
+    -- set some basic defaults
     self.responseBody = "";
     self.responseHeaders = {
         ["Status"] = "200 OK",
@@ -21,20 +28,36 @@ function Controller.new(script, layout)
     return self;
 end
 
+-- get raw query string
+function Controller:fetchGetData()
+    return os.getenv("QUERY_STRING");
+end
+
+-- get raw post data (only x-www-form-urlencoded forms are supported)
+function Controller:fetchPostData()
+    return io.read("*all");
+end
+
+-- Set / replace response header
 function Controller:setResponseHeader(name, value)
     self.responseHeaders[name] = value;
 end
 
+-- Set response status code & message
 function Controller:setResponseStatus(status)
     self:setResponseHeader("Status", status);
 end
 
+-- Enable browser cache for given page.
 function Controller:enableBrowserCache()
     self:setResponseHeader("Cache-Control", "cache");
     self:setResponseHeader("Pragma", "cache");
     self:setResponseHeader("Expires", os.date("%s, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t")) + 600));
 end
 
+-- Redorect user to given url with given redirection code.
+-- If external evaluates to false, url will be prefixed
+-- by SCRIPT_NAME
 function Controller:redirect(location, code, external)
     if not code then
         code = 303;
@@ -49,23 +72,26 @@ function Controller:redirect(location, code, external)
     self.enableRender = false;
 end
 
+-- abstract method to overload in controller, called before any action call
 function Controller:preAction() end;
+-- abstract method to overload in controller, called after any action call
 function Controller:postAction() end;
 
+-- send response headers & body
 function Controller:sendResponse()
     -- send response headers
     table.foreach(self.responseHeaders, function(name, value)
-        print(name .. ": " .. value);
+        io.write(name, ": ", value, "\n");
     end);
 
     -- empty line after headers
-    print();
+    io.write("\n");
 
     -- send response body - either parsed template od responseBody string
     if self.enableRender then
         self.view:render();
     else
-        print(self.responseBody);
+        io.write(self.responseBody);
     end
 end
 

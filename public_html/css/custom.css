@@ -1,0 +1,15 @@
+.jumbotron {
+	background: url('images/jumbotron.jpg') top center no-repeat;
+	background-size: cover;
+}
+
+.jumbotron h1 { margin-top: 0.2em; margin-bottom: 0.2em; font-size: 3.5rem; }
+
+.jumbotron .container {
+	background: rgba(230, 230, 230, 0.8);
+	padding: 20px;
+}
+
+button {
+	cursor: pointer;
+}

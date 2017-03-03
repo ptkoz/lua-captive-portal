@@ -1,15 +1,34 @@
-local module = {};
-local APPLICATION_PATH = "";
-local APPLICATION_LAYOUT = "";
-local driver = require "luasql.sqlite3"
+-- Bootstrap & run lua web application. This module
+-- sets several global variables and initializes other
+-- commonly used modules (eg. database).
 
-function module.bootstrap(applicationPath, applicationLayout)
+local Database = require("library.database");
+local Application = {};
+
+APPLICATION_PATH = "";
+APPLICATION_LAYOUT = "";
+APPLICATION_DB = "";
+
+-- Bootstrap application. Init global variables and environment.
+function Application.bootstrap(applicationPath, applicationLayout)
     APPLICATION_PATH = applicationPath;
     APPLICATION_LAYOUT = applicationLayout or applicationPath .. "/views/layout.html";
-    return module;
+    APPLICATION_DB = applicationPath .. "/library/database.db";
+
+    -- connect to sqlite db file.
+    local db, initDb = Database.getDatabase(APPLICATION_DB, true);
+
+    if initDb then
+        -- database file does not exists, initialize database
+        require("models.schema").create(db);
+    end;
+
+    return Application;
 end
 
-function module.hasController(name)
+-- Check whether given controller exists. Function
+-- copier from stackoverflow.com.
+function Application.hasController(name)
     if package.loaded[name] then
         return true
     else
@@ -24,9 +43,11 @@ function module.hasController(name)
     end
 end
 
-function module.dispatch(controller, action, template)
+-- Dispatch controller & action. This function return true
+-- if controller & action exists and false otherwise.
+function Application.dispatch(controller, action, template, activePath)
     -- check if module exists
-    if not module.hasController(controller) then
+    if not Application.hasController(controller) then
         return false;
     end
 
@@ -39,6 +60,7 @@ function module.dispatch(controller, action, template)
 
     -- create handler
     local handlerInstance = handler.new(template, APPLICATION_LAYOUT);
+    handlerInstance.view.activePath = activePath;
     handlerInstance:preAction();
     handlerInstance[action](handlerInstance);
     handlerInstance:postAction();
@@ -47,15 +69,19 @@ function module.dispatch(controller, action, template)
     return true;
 end
 
-function module.run()
+-- Run the application. Parse given URL and dispatch :controller/:action
+-- ot default :controller/index or defaut index/index
+function Application.run()
     local pathInfo = os.getenv("PATH_INFO") or "";
     local controller = pathInfo:match("^/(%w+)") or "index";
     local action = pathInfo:match("^/%w+/(%w+)") or "index";
     local template = APPLICATION_PATH .. "/views/" .. controller .. "/" .. action .. ".html";
 
-    if not module.dispatch("controllers." .. controller, action, template) then
-        module.dispatch("library.controllers.error", "error404", APPLICATION_PATH .. "/library/views/error/error404.html");
+    if not Application.dispatch("controllers." .. controller, action, template, controller .. "/" .. action) then
+        Application.dispatch("library.controllers.error", "error404", APPLICATION_PATH .. "/library/views/error/error404.html");
     end;
+
+    Database.closeAllDatabases();
 end
 
-return module;
+return Application;
