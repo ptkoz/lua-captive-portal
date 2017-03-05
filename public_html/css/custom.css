@@ -1,6 +1,7 @@
 .jumbotron {
 	background: url('images/jumbotron.jpg') top center no-repeat;
 	background-size: cover;
+	padding-top: 4rem;
 }
 
 .jumbotron h1 { margin-top: 0.2em; margin-bottom: 0.2em; font-size: 3.5rem; }
