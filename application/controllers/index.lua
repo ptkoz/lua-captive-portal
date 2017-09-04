@@ -4,6 +4,7 @@ local Session = require "models.session";
 
 -- the login screen
 function indexController:index()
+
     self.view.title = "Podaj token - FC Goście";
 
     if "POST" == os.getenv("REQUEST_METHOD") then
@@ -26,12 +27,38 @@ function indexController:index()
                 self.view.hasError = true;
                 self.view.errorTokenExpired = true;
             else
-                -- this token is valid and can be used - create session
-                Session.create(token.token, os.getenv("REMOTE_ADDR"));
-                -- immediately expire token, so nobody else will use it
-                token:expire();
-                -- redirect user to wifidog portal
-                return self:redirect("http://auth.wro.tuxlan.es:2060/wifidog/auth?token=" .. token.token, 303, true);
+                local f = assert( io.open("/proc/net/arp") );
+                local macAddress;
+                local ipAddress = os.getenv("REMOTE_ADDR");
+                local ipAddressLength = ipAddress:len();
+                for line in f:lines() do
+                    if line:sub(1, ipAddressLength) == ipAddress then
+                        macAddress = line:match(".-%s+.-%s+.-%s(%S+)");
+                        break;
+                    end
+                end
+
+                f:close();
+
+                if macAddress then
+                    -- this token is valid and can be used - create session
+                    if 0 ~= os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2") then
+                        -- but only if mac address is not yet present in iptables
+                        Session.create(token.token, os.getenv("REMOTE_ADDR"), macAddress);
+                        os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2")
+                    end
+
+                    -- immediately expire token, so nobody else will use it
+                    token:expire();
+
+                    -- redirect user to thank you page
+                    return self:redirect("/index/success");
+
+                else
+                    self.view.token = params.token;
+                    self.view.hasError = true;
+                    self.view.errorTokenExpired = true;
+                end
             end; end;
         end;
 
