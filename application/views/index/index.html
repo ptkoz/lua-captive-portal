@@ -11,6 +11,7 @@
 						<button type="submit" class="btn btn-primary btn-lg">Dalej</button>
 					</span>
 				</div>
+				{{body}}
 				{%if errorNoToken then%}<div class="form-control-feedback text-justify">Wpisz token w polu powyżej.</div>{%end%}
 				{%if errorInvalidToken then%}<div class="form-control-feedback text-justify">Wpisany token jest nieprawidłowy. Wygeneruj nowy token.</div>{%end%}
 				{%if errorTokenExpired then%}<div class="form-control-feedback text-justify">Ważność Twojego tokena wygasła. Wygeneruj nowy token.</div>{%end%}
