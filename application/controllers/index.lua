@@ -37,29 +37,24 @@ function indexController:index()
                         break;
                     end
                 end
-
                 f:close();
 
                 if macAddress then
-                    -- this token is valid and can be used - create session
-                    if 0 ~= os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2") then
-                        -- but only if mac address is not yet present in iptables
-                        Session.clearExpired();
-                        Session.create(os.getenv("REMOTE_ADDR"), macAddress);
-                        os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2")
-                    end
-
+                    -- token is valid and user is connected to router
                     -- immediately expire token, so nobody else will use it
                     token:expire();
 
-                    -- redirect user to thank you page
-                    return self:redirect("/index/success");
-
-                else
-                    self.view.token = params.token;
-                    self.view.hasError = true;
-                    self.view.errorTokenExpired = true;
+                    -- and create session
+                    if Session.create(os.getenv("REMOTE_ADDR"), macAddress) then
+                        return self:redirect("/index/success");
+                    end
                 end
+
+                -- if session was created successfully user is already redirected
+                -- otherwise we need to display error message
+                self.view.token = params.token;
+                self.view.hasError = true;
+                self.view.errorUnableToConnect = true;
             end; end;
         end;
 

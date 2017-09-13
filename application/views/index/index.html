@@ -15,7 +15,9 @@
 				{%if errorNoToken then%}<div class="form-control-feedback text-justify">Wpisz token w polu powyżej.</div>{%end%}
 				{%if errorInvalidToken then%}<div class="form-control-feedback text-justify">Wpisany token jest nieprawidłowy. Wygeneruj nowy token.</div>{%end%}
 				{%if errorTokenExpired then%}<div class="form-control-feedback text-justify">Ważność Twojego tokena wygasła. Wygeneruj nowy token.</div>{%end%}
+				{%if errorUnableToConnect then%}<div class="form-control-feedback text-justify">Nie udało się zestawić bezpiecznego połączenia. Spróbuj ponownie później.</div>{%end%}
 				{%if not hasError then%}<div class="form-control-feedback">&nbsp;</div>{%end%}
+
 			</fieldset>
 		</form>
 		<p class="text-justify">Tokenizer znajduje się na komodzie w przedpokoju. Jeżeli potrzebujesz pomocy, poproś o nią któregoś z domowników (Tosia też potrafi wygenerować token, wystarczy podnieść ją na wysokość routera - będzie wiedziała co robić dalej).</p>
