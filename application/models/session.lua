@@ -8,7 +8,7 @@ local db = assert( require("library.database").getDatabase() );
 
 -- fetch session data from database
 function Session.new(mac)
-    local cur = db:query("SELECT * FROM sessions WHERE mac = ?", mac:upper());
+    local cur = assert( db:query("SELECT * FROM sessions WHERE mac = ?", mac:upper()) );
     local res = cur:fetch({}, "a");
     cur:close();
 
@@ -16,10 +16,9 @@ function Session.new(mac)
 
     -- record exists, check whether corresponding iptables
     -- rule is still there
-    if 0 ~= os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") then
+    if 0 == os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") then
         -- everyting is OK
-        local self = assert( setmetatable(res, Session) );
-        return self;
+        return assert( setmetatable(res, Session) );
     else
         -- iptables rule has vanished, delete session
         assert( db:query("DELETE FROM sessions WHERE mac = ?", mac:upper()) );
@@ -28,10 +27,16 @@ function Session.new(mac)
 end
 
 -- update session's data counters
-function Session:updateCounters(incoming, outgoing)
-    self.incoming = incoming;
-    self.outgoing = outgoing;
-    db:query("UPDATE sessions SET incoming = ?, outgoing = ? WHERE mac = ?", self.incoming, self.outgoing, self.mac);
+function Session:updateCounters(pkts, bytes)
+    self.pkts = pkts;
+    self.bytes = bytes;
+    assert( db:query("UPDATE sessions SET pkts = ?, bytes = ? WHERE mac = ?", self.pkts, self.bytes, self.mac) );
+end
+
+-- extend session lifetime
+function Session:extend()
+    self.expires = os.time() + 86400;
+    assert( db:query("UPDATE sessions SET expires = ? WHERE mac = ?", self.expires, self.mac) );
 end
 
 -- delete session and corresponding rule
@@ -63,15 +68,18 @@ function Session.create(ip, mac)
     local expires = os.time() + 86400;
     -- put session into database; this will return nil in
     -- case of duplicated mac or 1 otherwise.
-    assert( db:query("INSERT INTO sessions (mac, expires, ip) VALUES(?, ?, ?)", mac:upper(), expires, ip) );
-    assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") );
-    return true;
+    if db:query("INSERT INTO sessions (mac, expires, ip) VALUES(?, ?, ?)", mac:upper(), expires, ip) then
+        assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") );
+        return true;
+    else
+        return false;
+    end;
 end
 
 -- remove all expired sessions
 function Session.clearExpired()
     local time = os.time();
-    return db:query("DELETE FROM sessions WHERE expires <= ?", time);
+    return assert( db:query("DELETE FROM sessions WHERE expires <= ?", time) );
 end
 
 return Session;
