@@ -1,6 +1,7 @@
 local indexController = require "library.controllers.controller";
 local Token = require "models.token";
 local Session = require "models.session";
+local Arp = require "models.arp";
 
 -- the login screen
 function indexController:index()
@@ -27,18 +28,7 @@ function indexController:index()
                 self.view.hasError = true;
                 self.view.errorTokenExpired = true;
             else
-                local f = assert( io.open("/proc/net/arp") );
-                local macAddress;
-                local ipAddress = os.getenv("REMOTE_ADDR");
-                local ipAddressLength = ipAddress:len();
-                for line in f:lines() do
-                    if line:sub(1, ipAddressLength) == ipAddress then
-                        macAddress = line:match(".-%s+.-%s+.-%s(%S+)");
-                        break;
-                    end
-                end
-                f:close();
-
+                local macAddress = Arp.findMacByIp(os.getenv("REMOTE_ADDR"));
                 if macAddress then
                     -- token is valid and user is connected to router
                     -- immediately expire token, so nobody else will use it
