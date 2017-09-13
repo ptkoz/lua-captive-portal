@@ -6,7 +6,7 @@ START=99
 GGUARD_BIN=/mnt/sda1/auth.wro.tuxlan.es/bin/guard.lua
 
 start_service() {
-	procd_open_instance tknd
+	procd_open_instance gguard
 	procd_set_param command $GGUARD_BIN
 	procd_set_param stdout 1
 	procd_set_param stderr 1
