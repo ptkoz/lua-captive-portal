@@ -13,28 +13,26 @@ require "application".bootstrap(dirname .. "/../application");
 
 local Token = require("models.token");
 local Session = require("models.session");
-local nixio = require("nixio");
 
 -- avr-token-generator device serial connection
 local device = "/dev/ttyUSB0";
 
 -- initialize syslog
-nixio.openlog("tknd");
-nixio.syslog("info", "Starting daemon\n");
+io.stdout:write("Starting daemon\n");
 
 -- set connection parameters on serial port
-nixio.syslog("info", "Setting connection parameters for " .. device .. "\n");
+io.stdout:write("Setting connection parameters for " .. device .. "\n");
 os.execute("stty -F " .. device .. " cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts");
 
 -- open serial port
-nixio.syslog("info", "Openning connection to " .. device .. "\n");
+io.stdout:write("Openning connection to " .. device .. "\n");
 local serial = assert( io.open(device, "r+"));
 
 -- Wrap main loop into pcall. This allows script to clean up
 -- after some unexpected event, eg. when tokenizer is disconnected
 -- from the router.
 local status, error = pcall(function()
-    nixio.syslog("info", "Entering main loop\n");
+    io.stdout:write("Entering main loop\n");
     while(1) do
         -- wait for message from the avr-token-generator
         local chunk = serial:read();
@@ -43,7 +41,7 @@ local status, error = pcall(function()
         end;
 
         -- log received message
-        nixio.syslog("info", ">> " .. chunk);
+        io.stdout:write(">> " .. chunk);
         if "TKN:" == chunk:sub(1, 4) then
             -- we have received new token!
             -- clear expired tokens & sessions
@@ -71,12 +69,10 @@ local status, error = pcall(function()
 end);
 
 if not status then
-    nixio.syslog("alert", "Main daemon loop finished with error: " .. error .. "\n");
+    io.stderr:write("Main daemon loop finished with error: " .. error .. "\n");
 end
 
-nixio.syslog("info", "Closing daemon\n");
+io.stdout:write("Closing daemon\n");
 
 serial:close();
-nixio.closelog();
-
 return 0;
