@@ -10,22 +10,64 @@ package.path = package.path .. ";" .. dirname .. "/../vendor/?.lua;" .. dirname 
 -- bootstrap application (to have database), but not run
 require "application".bootstrap(dirname .. "/../application");
 
-local Token = require("models.token");
-local Session = require("models.session");
-local nixio = require("nixio");
+local Session = require "models.session";
+local Arp = require "models.arp";
 
--- initialize syslog
-nixio.openlog("captive-guard");
-nixio.syslog("info", "Validating guest sessions.\n");
+io.stdout:write("Validating guest sessions.\n");
 
+-- iterate through rules
 local currentRules = io.popen("iptables -t mangle -vL allowed_guests");
 for rule in currentRules:lines() do
+    -- grab some basic metrics
     local outgoingPkts, outgoingBytes, macAddress = rule:match("%s*(%d+)%s+(%d+).-MAC%s+(%S+)");
-    if macAddress then
-        print(macAddress .. ": " .. outgoingPkts .. " " .. outgoingBytes);
-    end
-end
 
-nixio.closelog();
+    -- perform checks in pcall to catch errors
+    local status, error = pcall(function(mac, pkts, bytes)
+        if mac then
+            local session = Session.new(mac);
+
+            if session then
+                -- check if session is still valid
+                if session.expires <= os.time() then
+                    -- session expired, delete
+                    session:delete();
+                    return 0;
+                end
+
+                -- if IP has been changed, then something is wrong and probably
+                -- someone is spoofing MAC address to gain network access
+                local currentIp = Arp.findIpByMac(mac);
+                if (currentIp and currentIp ~= session.ip) then
+                    -- ip conflict, delete session
+                    io.stdout:write("IP address recorded in session does not match current. Deleting session.\n");
+                    io.stdout:write("Current IP: " .. currentIp .. ", Recorder IP: " .. session.ip .. "\n");
+                    io.stdout:write("Current MAC: " .. mac .. ", Recorder MAC: " .. session.mac .. "\n");
+                    session:delete();
+                    return 0;
+                end
+
+                -- if traffic was recorded for given session, extend it's validity
+                -- for another day,
+                if pkts > session.pkts then
+                    io.stdout:write("Extending session lifetime for " .. session.mac .. " (" .. session.ip .. ")\n");
+                    session:updateCounters(pkts, bytes);
+                    session:extend();
+                end
+            else
+                -- session does not exist, immediately delete rule!
+                io.stdout:write("Session for mac address <" .. mac .. "> does not exist, deleting...\n");
+                assert( os.execute("iptables -t mangle -D allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") );
+                return 0;
+            end
+        end
+    end, macAddress, tonumber(outgoingPkts), tonumber(outgoingBytes));
+
+    if not status then
+        io.stderr:write(error .. "\n");
+    end
+
+    -- delete all expired sessions left
+    Session.clearExpired();
+end
 
 return 0;

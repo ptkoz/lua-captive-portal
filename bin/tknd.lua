@@ -44,9 +44,8 @@ local status, error = pcall(function()
         io.stdout:write(">> " .. chunk);
         if "TKN:" == chunk:sub(1, 4) then
             -- we have received new token!
-            -- clear expired tokens & sessions
+            -- clear expired tokens
             Token.clearExpired();
-            Session.clearExpired();
 
             -- try to create token - this will fail if exact same token
             -- already exists
