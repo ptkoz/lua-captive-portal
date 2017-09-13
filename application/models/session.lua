@@ -7,9 +7,9 @@ Session.__index = Session;
 
 local db = assert( require("library.database").getDatabase() );
 
--- fetch token data from database
-function Session.new(token)
-    local cur = db:query("SELECT * FROM sessions WHERE token = ?", token:upper());
+-- fetch session data from database
+function Session.new(mac)
+    local cur = db:query("SELECT * FROM sessions WHERE mac = ?", mac:upper());
     local res = cur:fetch({}, "a");
     cur:close();
 
@@ -23,28 +23,28 @@ end
 function Session:updateCounters(incoming, outgoing)
     self.incoming = incoming;
     self.outgoing = outgoing;
-    db:query("UPDATE sessions SET incoming = ?, outgoing = ? WHERE token = ?", self.incoming, self.outgoing, self.token);
+    db:query("UPDATE sessions SET incoming = ?, outgoing = ? WHERE mac = ?", self.incoming, self.outgoing, self.mac);
 end
 
--- extend session time by another 10 minutes
+-- extend session time by another 24 hours
 function Session:extend()
     self.expires = os.time() + 600;
-    db:query("UPDATE sessions SET expires = ? WHERE token = ?", self.expires, self.token);
+    db:query("UPDATE sessions SET expires = ? WHERE mac = ?", self.expires, self.mac);
 end
 
 -- expire session immediatelly and make it unusable
 function Session:expire()
     self.expires = os.time() - 1;
-    db:execute("UPDATE sessions SET expires = ? WHERE token = ?", self.expires, self.token);
+    db:execute("UPDATE sessions SET expires = ? WHERE mac = ?", self.expires, self.mac);
 end
 
 -- create new, fresh session in the database
-function Session.create(token, ip, mac)
-    -- session is valid for 10 minutes since generated
-    local expires = os.time() + 600;
+function Session.create(ip, mac)
+    -- session is valid for 24 hours
+    local expires = os.time() + 86400;
     -- put session into database; this will return nil in
-    -- case of duplicated token or 1 otherwise.
-    local result = db:query("INSERT INTO sessions (token, mac, expires, ip) VALUES(?, ?, ?, ?)", token:upper(), mac:upper(), expires, ip);
+    -- case of duplicated mac or 1 otherwise.
+    local result = db:query("INSERT INTO sessions (mac, expires, ip) VALUES(?, ?, ?, ?)", mac:upper(), expires, ip);
     return result;
 end
 

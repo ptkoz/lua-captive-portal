@@ -44,7 +44,8 @@ function indexController:index()
                     -- this token is valid and can be used - create session
                     if 0 ~= os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2") then
                         -- but only if mac address is not yet present in iptables
-                        Session.create(token.token, os.getenv("REMOTE_ADDR"), macAddress);
+                        Session.clearExpired();
+                        Session.create(os.getenv("REMOTE_ADDR"), macAddress);
                         os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. macAddress .. " -j MARK --set-mark 0x2")
                     end
 
@@ -68,7 +69,6 @@ end
 -- this message is shown when user successfully authenticates
 function indexController:success()
     self.view.title = "Gotowe - FC Goście";
-
     self:enableBrowserCache();
 end
 
