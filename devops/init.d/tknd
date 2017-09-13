@@ -1,4 +1,5 @@
 #!/bin/sh /etc/rc.common
+# TKND init script to handle token device automatically
 
 USE_PROCD=1
 START=99
