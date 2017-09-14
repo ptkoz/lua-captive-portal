@@ -63,7 +63,7 @@ function Database.getDatabase(dbfile, setDefault)
             initRequired = true;
         end
 
-        local conn = dbenv:connect(dbfile);
+        local conn = assert( dbenv:connect(dbfile) );
         connections[dbfile] = Instance.new(conn);
     end
 
