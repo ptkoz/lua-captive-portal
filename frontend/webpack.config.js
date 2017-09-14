@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 module.exports = {
-	entry: "index.tsx",
+	entry: "src/index.tsx",
 	output: {
 		path: __dirname + '/../public_html/js',
 		filename: 'index.js'
@@ -20,5 +20,13 @@ module.exports = {
 		extensions: ['.js', '.ts', '.tsx'],
 		// resolve modules by webpack, not typescript
 		modules: ['node_modules', __dirname]
+	},
+	devtool: "cheap-eval-source-map",
+	performance: {
+		hints: false
+	},
+	stats: {
+		modules: false,
+		colors: true
 	}
 };

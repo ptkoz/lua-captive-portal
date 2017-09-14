@@ -27,6 +27,32 @@
 	padding: 20px;
 }
 
+.jumbotron .alert {
+	opacity: 0.8;
+}
+
 button {
 	cursor: pointer;
+}
+
+.button-loading .indicator {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translate(0, -55%);
+}
+
+/* animated loading animation */
+.glyphicon-refresh-animate {
+	animation: spin .7s infinite ease-in-out;
+}
+
+@keyframes spin {
+	from { transform: scale(1) rotate(0deg);}
+	to { transform: scale(1) rotate(360deg);}
+}
+
+/* add some spacing on loading buttons */
+button span.glyphicon-refresh-animate {
+	margin-right: 0.5em;
 }
