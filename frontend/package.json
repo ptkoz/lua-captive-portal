@@ -19,13 +19,14 @@
     "react-router-dom": "^4.2.2",
     "ts-loader": "^2.3.7",
     "tslint": "^5.7.0",
+    "tslint-loader": "^3.5.3",
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.2",
     "uglify-js": "^3.1.0",
     "webpack": "^3.5.6"
   },
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "webpack --config webpack.production.config.js",
+    "watch": "webpack --config webpack.develop.config.js --watch"
   }
 }
