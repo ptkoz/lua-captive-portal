@@ -40,13 +40,15 @@ export class SubmitForm implements IThunkAction {
 	public dispatcher(dispatch: IDispatch, getState: () => IState) {
 		dispatch(new RequestSubmitForm());
 
-		dispatch(new ReceiveSubmitForm(
-			xhr.postJSON("/cgi-bin/captive.lua/auth/token", { token: getState().token }).then(
-				response => {
-					this.history.push("/success");
-					return response;
-				}
-			)
-		));
+		setTimeout(
+			() => dispatch(new ReceiveSubmitForm(
+				xhr.postJSON("/cgi-bin/captive.lua/auth/token", { token: getState().token }).then(
+					response => {
+						this.history.push("/success");
+						return response;
+					}
+				)
+			))
+		, 800);
 	}
 }
