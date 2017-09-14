@@ -33,12 +33,6 @@ function authController:token()
                     self.responseBody = '"OK"';
                 end
             end
-
-            -- if session was created successfully user is already redirected
-            -- otherwise we need to display error message
-            self.view.token = params.token;
-            self.view.hasError = true;
-            self.view.errorUnableToConnect = true;
         end; end;
 
         if not self.responseBody then
