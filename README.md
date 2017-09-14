@@ -11,14 +11,14 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 
 1. Disable forwarding from `guest` zone to `wan` zone in general firewall settings, to disable internet connection by default.
  
-2. Enable forwarding for validated guests by adding creating new traffic rule:
+2. Enable forwarding for validated guests by adding new traffic rule:
 	* Protocol: any
 	* Source zone: guest
 	* Destination zone: wan
 	* Action: accept
 	* Extra arguments: `-m mark --mark 0x2`
 	
-3. Disable password protection ("Encryption: No Encryption" in "Wireless Security" tab), so everyone will be able to connect and see captive portal.
+3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone will be able to connect and see captive portal.
 
 4. Add custom firewall rules required by captive portal.
 	```
