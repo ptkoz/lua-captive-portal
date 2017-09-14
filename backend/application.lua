@@ -6,13 +6,11 @@ local Database = require("library.database");
 local Application = {};
 
 APPLICATION_PATH = "";
-APPLICATION_LAYOUT = "";
 APPLICATION_DB = "";
 
 -- Bootstrap application. Init global variables and environment.
-function Application.bootstrap(applicationPath, applicationLayout)
+function Application.bootstrap(applicationPath)
     APPLICATION_PATH = applicationPath;
-    APPLICATION_LAYOUT = applicationLayout or applicationPath .. "/views/layout.html";
     APPLICATION_DB = applicationPath .. "/library/database.db";
 
     -- connect to sqlite db file.
@@ -45,7 +43,7 @@ end
 
 -- Dispatch controller & action. This function return true
 -- if controller & action exists and false otherwise.
-function Application.dispatch(controller, action, template, activePath)
+function Application.dispatch(controller, action)
     -- check if module exists
     if not Application.hasController(controller) then
         return false;
@@ -59,8 +57,7 @@ function Application.dispatch(controller, action, template, activePath)
     end;
 
     -- create handler
-    local handlerInstance = handler.new(template, APPLICATION_LAYOUT);
-    handlerInstance.view.activePath = activePath;
+    local handlerInstance = handler.new();
     handlerInstance:preAction();
     handlerInstance[action](handlerInstance);
     handlerInstance:postAction();
@@ -75,10 +72,9 @@ function Application.run()
     local pathInfo = os.getenv("PATH_INFO") or "";
     local controller = pathInfo:match("^/(%w+)") or "index";
     local action = pathInfo:match("^/%w+/(%w+)") or "index";
-    local template = APPLICATION_PATH .. "/views/" .. controller .. "/" .. action .. ".html";
 
-    if not Application.dispatch("controllers." .. controller, action, template, controller .. "/" .. action) then
-        Application.dispatch("library.controllers.error", "error404", APPLICATION_PATH .. "/library/views/error/error404.html");
+    if not Application.dispatch("controllers." .. controller, action) then
+        Application.dispatch("library.controllers.error", "error404");
     end;
 
     Database.closeAllDatabases();

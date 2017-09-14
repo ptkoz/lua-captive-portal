@@ -1,18 +1,12 @@
 -- This module may be used as basis for application
 -- controllers. It can handle CGI headers, inputs
--- templates, output buffering and some more.
-local template = require "resty.template";
-
+-- output buffering and some more.
 local Controller = {}
 Controller.__index = Controller;
 
 -- Controller's constructor.
-function Controller.new(script, layout)
+function Controller.new()
     local self = setmetatable({}, Controller);
-
-    -- enable resty template rendering engine
-    self.enableRender = true;
-    self.view = template.new(script, layout);
 
     -- set some basic defaults
     self.responseBody = "";
@@ -69,7 +63,6 @@ function Controller:redirect(location, code, external)
 
     self:setResponseStatus(code .. " Redirect");
     self:setResponseHeader("Location", location);
-    self.enableRender = false;
 end
 
 -- abstract method to overload in controller, called before any action call
@@ -87,12 +80,8 @@ function Controller:sendResponse()
     -- empty line after headers
     io.write("\n");
 
-    -- send response body - either parsed template od responseBody string
-    if self.enableRender then
-        self.view:render();
-    else
-        io.write(self.responseBody);
-    end
+    -- send response body
+    io.write(self.responseBody);
 end
 
 return Controller;

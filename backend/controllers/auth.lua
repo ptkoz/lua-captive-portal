@@ -3,64 +3,49 @@ local Token = require "models.token";
 local Session = require "models.session";
 local Arp = require "models.arp";
 
--- the login screen
+-- authentication by token
 function authController:token()
+    local params = require "library.input".parse(authController:fetchPostData());
+    self:setResponseHeader("Content-Type", "application/json; charset=UTF-8");
 
-    self.view.title = "Podaj token - FC Goście";
-
-    if "POST" == os.getenv("REQUEST_METHOD") then
-        local params = require "library.input".parse(authController:fetchPostData());
-
-        if not params.token then
-            self.view.token = params.token; -- not actually required, but left for convenince
-            self.view.hasError = true;
-            self.view.errorNoToken = true;
+    if not params.token or 0 == params.token:len() then
+        self:setResponseStatus("400 Bad request");
+        self.responseBody = '"Wpisz token w polu powyżej."';
+    else
+        local token = Token.new(params.token);
+        if not token then
+            -- token does not exist
+            self:setResponseStatus("400 Bad request");
+            self.responseBody = '"Wpisany token jest nieprawidłowy. Wygeneruj nowy token."';
+        else if token.expires <= os.time() then
+            -- token has expired
+            self:setResponseStatus("400 Bad request");
+            self.responseBody = '"Ważność Twojego tokena wygasła. Wygeneruj nowy token."';
         else
-            local token = Token.new(params.token);
-            if not token then
-                -- token does not exist
-                self.view.token = params.token;
-                self.view.hasError = true;
-                self.view.errorInvalidToken = true;
-            else if token.expires <= os.time() then
-                -- token has expired
-                self.view.token = params.token;
-                self.view.hasError = true;
-                self.view.errorTokenExpired = true;
-            else
-                local macAddress = Arp.findMacByIp(os.getenv("REMOTE_ADDR"));
-                if macAddress then
-                    -- token is valid and user is connected to router
-                    -- immediately expire token, so nobody else will use it
-                    token:expire();
+            local macAddress = Arp.findMacByIp(os.getenv("REMOTE_ADDR"));
+            if macAddress then
+                -- token is valid and user is connected to router
+                -- immediately expire token, so nobody else will use it
+                token:expire();
 
-                    -- and create session
-                    if Session.create(os.getenv("REMOTE_ADDR"), macAddress) then
-                        return self:redirect("/index/success");
-                    end
+                -- and create session
+                if Session.create(os.getenv("REMOTE_ADDR"), macAddress) then
+                    self.responseBody = '"OK"';
                 end
+            end
 
-                -- if session was created successfully user is already redirected
-                -- otherwise we need to display error message
-                self.view.token = params.token;
-                self.view.hasError = true;
-                self.view.errorUnableToConnect = true;
-            end; end;
+            -- if session was created successfully user is already redirected
+            -- otherwise we need to display error message
+            self.view.token = params.token;
+            self.view.hasError = true;
+            self.view.errorUnableToConnect = true;
+        end; end;
+
+        if not self.responseBody then
+            self:setResponseStatus("400 Bad request");
+            self.responseBody = '"Nie udało się zestawić bezpiecznego połączenia. Spróbuj ponownie później."';
         end;
-
-    end
-end
-
--- this message is shown when user successfully authenticates
-function authController:success()
-    self.view.title = "Gotowe - FC Goście";
-    self:enableBrowserCache();
-end
-
--- this message is shown when user session expires
-function authController:error()
-    self.view.title = "Sesja wygasła - FC Goście";
-    self:enableBrowserCache();
+    end;
 end
 
 return authController;

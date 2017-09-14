@@ -21,4 +21,3 @@ This software internally uses:
 * Latest nixio from [LuCI](https://github.com/openwrt/luci)
 * [Bootstrap v4](https://v4-alpha.getbootstrap.com)
 * [jQuery](https://jquery.com)
-* [LUA Resty templates](https://github.com/bungle/lua-resty-template) by Aapo Talvensaari
