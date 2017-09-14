@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "lib": [ "es5", "dom", "es2015.promise"],
+    "types": []
+  },
+  "exclude": [ "node_modules" ],
+  "include": [ "**/*.tsx?" ],
+  "files": ["node.d.ts"]
+}
