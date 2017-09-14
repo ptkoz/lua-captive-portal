@@ -6,7 +6,7 @@ local dirname = string.gsub(arg[0], "(.*)/(.*)", "%1");
 package.path = package.path .. ";" .. dirname .. "/../vendor/?.lua;" .. dirname .. "/../backend/?.lua";
 
 -- bootstrap application (to have database), bot not run
-require "application".bootstrap(dirname .. "/backend");
+require "application".bootstrap(dirname .. "/../backend");
 
 local Token = require("models.token");
 local Session = require("models.session");
