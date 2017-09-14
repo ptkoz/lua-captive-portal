@@ -4,7 +4,7 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware, compose, Store, GenericStoreEnhancer } from "redux";
 import { Provider as ReduxProvider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
-import { Root } from "./components/Root";
+import { Root } from "./Components/Root";
 
 let middleware = applyMiddleware();
 
@@ -13,7 +13,7 @@ let middleware = applyMiddleware();
  */
 // noinspection TypeScriptUnresolvedVariable
 if("production" !== process.env.NODE_ENV) {
-	if(window.window["devToolsExtension"]) {
+	if(window["devToolsExtension"]) {
 		middleware = compose(middleware, window["devToolsExtension"]()) as GenericStoreEnhancer;
 	}
 }

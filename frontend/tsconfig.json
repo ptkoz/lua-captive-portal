@@ -7,9 +7,8 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "lib": [ "es5", "dom", "es2015.promise"],
-    "types": []
+    "types": ["node"]
   },
   "exclude": [ "node_modules" ],
-  "include": [ "**/*.tsx?" ],
-  "files": ["node.d.ts"]
+  "include": [ "**/*.tsx" ]
 }

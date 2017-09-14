@@ -2,6 +2,7 @@
   "name": "lua-captive-frontend",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^8.0.28",
     "@types/react": "^16.0.5",
     "@types/react-bootstrap": "^0.31.2",
     "@types/react-dom": "^15.5.4",
