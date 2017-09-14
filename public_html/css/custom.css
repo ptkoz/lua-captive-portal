@@ -1,16 +1,58 @@
 .jumbotron {
 	background: url('images/jumbotron.jpg') top center no-repeat;
 	background-size: cover;
-	padding-top: 4rem;
+	padding-top: 1rem;
 }
 
-.jumbotron h1 { margin-top: 0.2em; margin-bottom: 0.2em; font-size: 3.5rem; }
+.jumbotron h1 {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	font-size: 5rem;
+	font-weight: 300;
+	line-height: 1.1;
+}
+
+.jumbotron p {
+	font-size: 1.25em;
+	color: black
+}
+
+.jumbotron p.lead {
+	font-size: 1.5em;
+	font-weight: 300;
+}
 
 .jumbotron .container {
 	background: rgba(230, 230, 230, 0.8);
 	padding: 20px;
 }
 
+.jumbotron .alert {
+	opacity: 0.8;
+}
+
 button {
 	cursor: pointer;
+}
+
+.button-loading .indicator {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translate(0, -55%);
+}
+
+/* animated loading animation */
+.glyphicon-refresh-animate {
+	animation: spin .7s infinite ease-in-out;
+}
+
+@keyframes spin {
+	from { transform: scale(1) rotate(0deg);}
+	to { transform: scale(1) rotate(360deg);}
+}
+
+/* add some spacing on loading buttons */
+button span.glyphicon-refresh-animate {
+	margin-right: 0.5em;
 }

@@ -1,0 +1,39 @@
+{
+  "extends": ["tslint:recommended", "tslint-react"],
+  "rules": {
+    "indent": [
+      true,
+      "tabs"
+    ],
+    "object-literal-sort-keys": false,
+    "trailing-comma": false,
+    "no-trailing-whitespace": false,
+    "no-string-literal": false,
+    "triple-equals": false,
+    "whitespace": [
+      true,
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type"
+    ],
+    "max-line-length": false,
+    "eofline": false,
+    "curly": false,
+    "one-line": false,
+    "switch-default": false,
+    "jsx-no-lambda": true,
+    "radix": false,
+    "ordered-imports": false,
+    "prefer-for-of": false,
+    "object-literal-key-quotes": false,
+    "object-literal-shorthand": false,
+    "arrow-parens": false,
+    "only-arrow-functions": false,
+    "no-conditional-assignment": false
+  },
+  "rulesDirectory": [
+
+  ]
+}
