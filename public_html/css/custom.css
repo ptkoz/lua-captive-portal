@@ -31,6 +31,15 @@
 	opacity: 0.8;
 }
 
+.jumbotron form {
+	margin-top: 60px;
+	margin-bottom: 10px;
+}
+
+.jumbotron .help-block {
+	height: 70px;
+}
+
 button {
 	cursor: pointer;
 }
@@ -55,4 +64,22 @@ button {
 /* add some spacing on loading buttons */
 button span.glyphicon-refresh-animate {
 	margin-right: 0.5em;
+}
+
+div.loader {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: #002200;
+}
+
+div.loader .spinner {
+	font-size: 120px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	color: #FFFFFF;
 }
