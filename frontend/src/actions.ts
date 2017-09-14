@@ -44,7 +44,10 @@ export class SubmitForm implements IThunkAction {
 			() => dispatch(new ReceiveSubmitForm(
 				xhr.postJSON("/cgi-bin/captive.lua/auth/token", { token: getState().token }).then(
 					response => {
-						this.history.push("/success");
+						// Redirect to success page. Full reload is required
+						// in order to inform captive portal about successful
+						// authorization.
+						window.location.href = "/success.html";
 						return response;
 					}
 				)

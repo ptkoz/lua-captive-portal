@@ -38,8 +38,9 @@ export const reducer = pipeReducers([
 		Actions.ReceiveSubmitForm,
 
 		// onSuccess
-		(): IState => {
-			return initialState;
+		(state: IState): IState => {
+			// user is going to be redirected, show loading indicator
+			return { ...state, isLoading: true };
 		},
 
 		// onFailure

@@ -30,7 +30,7 @@ const appNode = document.getElementById("main");
  * OK, let's render the application.
  */
 render((
-	<MemoryRouter initialEntries={appNode.dataset.e404 ? ["/404"] : ["/"]}>
+	<MemoryRouter initialEntries={appNode.dataset.href ? [appNode.dataset.href] : ["/"]}>
 		<ReduxProvider store={store}>
 			<Root />
 		</ReduxProvider>
