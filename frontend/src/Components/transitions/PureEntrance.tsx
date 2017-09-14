@@ -86,7 +86,7 @@ interface IPureEntranceState {
 export class PureEntrance extends React.Component<IPureEntranceProps, IPureEntranceState> {
 	public static defaultProps: IPureEntrancePropsOptional = {
 		show: false,
-		timeout: 0,
+		timeout: 200,
 
 		onEnter: () => undefined,
 		onEntering: () => undefined,

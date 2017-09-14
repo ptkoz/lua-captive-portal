@@ -1,6 +1,4 @@
 .jumbotron {
-	background: url('images/jumbotron.jpg') top center no-repeat;
-	background-size: cover;
 	padding-top: 1rem;
 }
 
@@ -23,12 +21,7 @@
 }
 
 .jumbotron .container {
-	background: rgba(230, 230, 230, 0.8);
 	padding: 20px;
-}
-
-.jumbotron .alert {
-	opacity: 0.8;
 }
 
 .jumbotron form {
