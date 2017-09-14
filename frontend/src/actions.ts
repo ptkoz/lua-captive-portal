@@ -2,6 +2,7 @@
 import { IPlainAction, IThunkAction, TypeOnPrototype, IDispatch } from "./Tools/fsa";
 import { IState } from "./state";
 import { xhr } from "./Tools/xhr";
+import { MemoryHistory } from "history";
 
 /**
  * Updates current filtering form state
@@ -32,11 +33,20 @@ export class ReceiveSubmitForm implements IPlainAction {
 }
 
 export class SubmitForm implements IThunkAction {
+	public constructor(private history: MemoryHistory) {
+
+	}
+
 	public dispatcher(dispatch: IDispatch, getState: () => IState) {
 		dispatch(new RequestSubmitForm());
 
 		dispatch(new ReceiveSubmitForm(
-			xhr.postJSON("/cgi-bin/captive.lua/auth/token", { token: getState().token })
+			xhr.postJSON("/cgi-bin/captive.lua/auth/token", { token: getState().token }).then(
+				response => {
+					this.history.push("/success");
+					return response;
+				}
+			)
 		));
 	}
 }

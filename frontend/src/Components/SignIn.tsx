@@ -21,7 +21,7 @@ export class SignIn extends React.PureComponent<ISignInProps, {}> {
 			<div>
 				<Jumbotron>
 					<div className="container">
-						<h1 className="display-3">Podaj token</h1>
+						<h1>Podaj token</h1>
 						<p className="lead text-justify">Aby uzyskać dostęp do internetu musisz wygenerować i podać w poniższym formularzu specjalny token.</p>
 						<SignInForm />
 						<p className="text-justify">Tokenizer znajduje się na komodzie w przedpokoju. Jeżeli potrzebujesz pomocy, poproś o nią któregoś z domowników (Tosia też potrafi wygenerować token, wystarczy podnieść ją na wysokość routera - będzie wiedziała co robić dalej).</p>

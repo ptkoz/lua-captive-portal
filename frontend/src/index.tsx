@@ -3,7 +3,7 @@ import { render } from "react-dom";
 
 import { createStore, applyMiddleware, compose, Store, GenericStoreEnhancer } from "redux";
 import { Provider as ReduxProvider } from "react-redux";
-import { MemoryRouter as Router } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { Root } from "./Components/Root";
 import { IState } from "./state";
 import { reducer } from "./reducer";
@@ -30,9 +30,9 @@ let appNode = document.getElementById("main");
  * OK, let's render the application.
  */
 render((
-	<Router>
+	<MemoryRouter initialEntries={appNode.dataset.e404 ? ['/404'] : ['/']}>
 		<ReduxProvider store={store}>
 			<Root />
 		</ReduxProvider>
-	</Router>
+	</MemoryRouter>
 ), appNode);

@@ -7,6 +7,7 @@ import { FormContent } from "./FormContent";
 
 import { connect } from "react-redux";
 import { SubmitForm } from "../../actions";
+import { withRouter } from "react-router";
 
 /**
  * Props available on this component
@@ -35,12 +36,12 @@ class SignInForm extends React.PureComponent<ISignInFormProps, {}> {
 /**
  * Map onSubmit to action dispatcher
  */
-const mapDispatchToProps = (dispatch): ISignInFormProps => ({
+const mapDispatchToProps = (dispatch, { history }): ISignInFormProps => ({
 	onSubmit: (event: React.FormEvent<Form>): void => {
 		event.preventDefault();
-		dispatch(new SubmitForm());
+		dispatch(new SubmitForm(history));
 	}
 });
 
-const SignInFormConnected = connect<{}, ISignInFormProps, {}>(null, mapDispatchToProps)(SignInForm);
+const SignInFormConnected = withRouter(connect<{}, ISignInFormProps, {}>(null, mapDispatchToProps)(SignInForm));
 export { SignInFormConnected as SignInForm };
