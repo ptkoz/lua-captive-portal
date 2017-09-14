@@ -6,6 +6,7 @@ import { Motivation } from "./Motivation";
 import { Geekness } from "./Geekness";
 import { SignIn } from "./SignIn";
 import { Error404 } from "./Error404";
+import { Success } from "./Success";
 import { Route } from "react-router";
 
 /**
@@ -25,6 +26,7 @@ export class Content extends React.PureComponent<IContentProps, {}> {
 				<Route path="/" exact component={SignIn}/>
 				<Route path="/geekness" component={Geekness}/>
 				<Route path="/motivation" component={Motivation}/>
+				<Route path="/success" component={Success}/>
 				<Route path="/404" component={Error404}/>
 			</div>
 		);
