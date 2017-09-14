@@ -41,22 +41,22 @@ export class FadeCollapse extends React.Component<IPureEntrancePropsOptional, IF
 			if(!this.state.expanded) {
 				/* start expanding, fade-in will be fired by callback */
 				/* if already expanded, nothing changes */
-				let newState: IFadeCollapseState = { expanded: true, performingExpand: true };
+				const newState: IFadeCollapseState = { expanded: true, performingExpand: true };
 				this.setState(newState);
 			} else if(!this.state.visible && !this.state.performingExpand) {
 				/* possibly we may be during fade out animation, need to break it */
-				let newState: IFadeCollapseState = { visible: true, performingFadeOut: false };
+				const newState: IFadeCollapseState = { visible: true, performingFadeOut: false };
 				this.setState(newState);
 			}
 		} else {
 			if(this.state.visible) {
 				/* fade-out, collapse will be fired by callback */
 				/* if already fade-out, nothing changes */
-				let newState: IFadeCollapseState = { visible: false, performingFadeOut: true };
+				const newState: IFadeCollapseState = { visible: false, performingFadeOut: true };
 				this.setState(newState);
 			} else if(this.state.expanded && !this.state.performingFadeOut) {
 				/* possibly we may be during expand, need to break it */
-				let newState: IFadeCollapseState = { expanded: false, performingExpand: false };
+				const newState: IFadeCollapseState = { expanded: false, performingExpand: false };
 				this.setState(newState);
 			}
 		}
@@ -90,7 +90,7 @@ export class FadeCollapse extends React.Component<IPureEntrancePropsOptional, IF
 	 */
 	private onCollapseEntered = (): void => {
 		/* must be detached, otherwise does not work properly */
-		let newState: IFadeCollapseState = { visible: true, performingExpand: false };
+		const newState: IFadeCollapseState = { visible: true, performingExpand: false };
 		setTimeout(() => this.setState(newState), 1);
 	}
 
@@ -101,7 +101,7 @@ export class FadeCollapse extends React.Component<IPureEntrancePropsOptional, IF
 	 */
 	private onFadeExited = (): void => {
 		/* must be detached, otherwise does not work properly */
-		let newState: IFadeCollapseState = { expanded: false, performingFadeOut: false };
+		const newState: IFadeCollapseState = { expanded: false, performingFadeOut: false };
 		setTimeout(() => this.setState(newState), 1);
 	}
 }

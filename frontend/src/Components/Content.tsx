@@ -23,7 +23,7 @@ export class Content extends React.PureComponent<IContentProps, {}> {
 	public render(): JSX.Element {
 		return (
 			<div>
-				<Route path="/" exact component={SignIn}/>
+				<Route path="/" exact={true} component={SignIn}/>
 				<Route path="/geekness" component={Geekness}/>
 				<Route path="/motivation" component={Motivation}/>
 				<Route path="/success" component={Success}/>

@@ -31,7 +31,8 @@
     "object-literal-shorthand": false,
     "arrow-parens": false,
     "only-arrow-functions": false,
-    "no-conditional-assignment": false
+    "no-conditional-assignment": false,
+    "no-empty-interface": false
   },
   "rulesDirectory": [
 

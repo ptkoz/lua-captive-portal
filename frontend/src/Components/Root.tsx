@@ -14,7 +14,7 @@ import { Content } from "./Content";
  * Props available on this component
  */
 export interface IRootProps {
-	location?: Location
+	location?: Location;
 }
 
 /**
@@ -24,18 +24,18 @@ class Root extends React.PureComponent<IRootProps, {}> {
 	public render(): JSX.Element {
 		return (
 			<div style={{paddingTop: "50px"}}>
-				<Navbar collapseOnSelect inverse fixedTop>
+				<Navbar collapseOnSelect={true} inverse={true} fixedTop={true}>
 					<Navbar.Header>
 						<Navbar.Brand>
-							<LinkContainer to="/" exact>
+							<LinkContainer to="/" exact={true}>
 								<a href="/" className="navbar-brand">FC Goście</a>
 							</LinkContainer>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>
 					<Navbar.Collapse>
-						<Nav pullRight>
-							<LinkContainer to="/" exact>
+						<Nav pullRight={true}>
+							<LinkContainer to="/" exact={true}>
 								<NavItem eventKey={1}>Logowanie</NavItem>
 							</LinkContainer>
 							<LinkContainer to="/motivation">

@@ -25,6 +25,6 @@ export class Motivation extends React.PureComponent<IMotivationProps, {}> {
 				<h2>Dla Ciebie prostsze logowanie...</h2>
 				<p className="text-justify">Motywacja to oczywiście nie wszystko. Miałem mnóstwo frajdy budując i oprogramowując cały system. W efekcie ty masz łatwiejszy dostęp do internetu, a ja jestem szczęśliwszy. Win-win. ;-)</p>
 			</div>
-		)
+		);
 	}
 }

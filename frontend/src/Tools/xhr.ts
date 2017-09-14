@@ -1,3 +1,4 @@
+// tslint:disable-next-line interface-name
 interface Dict<T> {
 	[key: string]: T;
 }
@@ -9,10 +10,10 @@ interface Dict<T> {
 export function mapParams(data: Dict<any>): string {
 	const params: string[] = [];
 
-	for(let key in data) {
+	for(const key in data) {
 		if(!data.hasOwnProperty(key)) continue;
 
-		let value = data[key];
+		const value = data[key];
 		if(value === null || value === undefined) continue;
 
 		if(Array.isArray(value)) {
@@ -26,7 +27,7 @@ export function mapParams(data: Dict<any>): string {
 		}
 	}
 
-	return params.join('&');
+	return params.join("&");
 }
 
 /**
@@ -51,7 +52,7 @@ export const xhr = {
 
 				request.open(method, url);
 
-				for(let i in headers) {
+				for(const i in headers) {
 					if(!headers.hasOwnProperty(i)) continue;
 					request.setRequestHeader(i, headers[i]);
 				}

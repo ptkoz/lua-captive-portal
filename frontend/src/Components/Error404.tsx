@@ -26,14 +26,14 @@ export class Error404 extends React.PureComponent<IError404Props, {}> {
 						<p>Pamiętaj, że jeśli próbujesz zrobić coś brzydkiego, to Igor automatycznie powiadomi najbliższy posterunek policji!</p>
 						<Row>
 							<Col sm={6} smOffset={3}>
-								<LinkContainer to="/" exact>
-									<Button block bsSize="large">Wróć do strony logowania</Button>
+								<LinkContainer to="/" exact={true}>
+									<Button block={true} bsSize="large">Wróć do strony logowania</Button>
 								</LinkContainer>
 							</Col>
 						</Row>
 					</div>
 				</Jumbotron>
 			</div>
-		)
+		);
 	}
 }

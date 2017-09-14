@@ -47,6 +47,6 @@ export class SignIn extends React.PureComponent<ISignInProps, {}> {
 					</Row>
 				</div>
 			</div>
-		)
+		);
 	}
 }

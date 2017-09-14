@@ -64,10 +64,10 @@ export class FadeResizeReplace extends React.PureComponent<{}, IFadeReplaceState
 	 * element.
 	 */
 	public componentWillReceiveProps(props): void {
-		let child = React.Children.only(props.children);
+		const child = React.Children.only(props.children);
 		if(child.key != this.state.current.key) {
 			// Set next element and start hiding current.
-			let wasAlreadyFadedOut = !this.state.visible && !this.state.next;
+			const wasAlreadyFadedOut = !this.state.visible && !this.state.next;
 			this.setState({ next: child, visible: false }, () => {
 				/* manually trigger if exiting element was already faded out */
 				if(wasAlreadyFadedOut) this.onCurrentExited();
@@ -117,12 +117,12 @@ export class FadeResizeReplace extends React.PureComponent<{}, IFadeReplaceState
 
 		// Replace the element content, but don't show it yet. First we
 		// need to resize the box.
-		let newState: IFadeReplaceState = { next: null, current: this.state.next, visible: false, resizeTransitionClassName: CLASSNAME_RESIZING };
+		const newState: IFadeReplaceState = { next: null, current: this.state.next, visible: false, resizeTransitionClassName: CLASSNAME_RESIZING };
 		this.setState(newState, () => {
 			// Now new element is rendered, we may resize the box if necessary.
 			// This will trigger resize animation. Once it is completed,
 			// onBoxAdjusted callback will be fired.
-			let previousHeight = node.style.height;
+			const previousHeight = node.style.height;
 			node.style.height = node.firstChild[`scrollHeight`] + "px";
 
 			// force browser to calculate offsetHeight;

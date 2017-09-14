@@ -80,7 +80,7 @@ function isThunkAction(a: any): a is IThunkAction {
  * Type guard for Promises}
  */
 function isPromise(a: any): a is Promise<any> {
-	return a && typeof a.then === 'function';
+	return a && typeof a.then === "function";
 }
 
 function convertPlainAction(action: IPlainAction) {

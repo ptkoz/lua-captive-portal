@@ -22,15 +22,15 @@ if("production" !== process.env.NODE_ENV) {
 }
 
 // Create redux store
-let store: Store<IState> = createStore(reducer, middleware);
+const store: Store<IState> = createStore(reducer, middleware);
 // define app HTML node
-let appNode = document.getElementById("main");
+const appNode = document.getElementById("main");
 
 /**
  * OK, let's render the application.
  */
 render((
-	<MemoryRouter initialEntries={appNode.dataset.e404 ? ['/404'] : ['/']}>
+	<MemoryRouter initialEntries={appNode.dataset.e404 ? ["/404"] : ["/"]}>
 		<ReduxProvider store={store}>
 			<Root />
 		</ReduxProvider>

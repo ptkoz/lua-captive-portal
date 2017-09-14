@@ -49,7 +49,7 @@ export class PureTransition extends React.PureComponent<IPureTransitionProps, {}
 	 * Render div element
 	 */
 	public render(): JSX.Element {
-		let { onTransitionEnd, ...props } = this.props;
+		const { onTransitionEnd, ...props } = this.props;
 		return <div ref={this.onDivMounted} {...props}>{this.props.children}</div>;
 	}
 

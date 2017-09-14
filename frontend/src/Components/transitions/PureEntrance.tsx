@@ -165,13 +165,13 @@ export class PureEntrance extends React.Component<IPureEntranceProps, IPureEntra
 		this.eventTimeout = null;
 
 		if(STATUS.ENTERING == this.state.status) {
-			let newState: IPureEntranceState = {
+			const newState: IPureEntranceState = {
 				status: STATUS.ENTERED
 			};
 
 			this.setState(newState, this.props.onEntered);
 		} else if(STATUS.EXITING == this.state.status) {
-			let newState: IPureEntranceState = {
+			const newState: IPureEntranceState = {
 				status: STATUS.EXITED
 			};
 
@@ -198,7 +198,7 @@ export class PureEntrance extends React.Component<IPureEntranceProps, IPureEntra
 	private performEnter(): void {
 		this.props.onEnter();
 
-		let newState: IPureEntranceState = { status: STATUS.ENTERING };
+		const newState: IPureEntranceState = { status: STATUS.ENTERING };
 		if(this.props.timeout) {
 			this.eventTimeout = window.setTimeout(this.handleTransitionEnd, this.props.timeout);
 		}
@@ -209,7 +209,7 @@ export class PureEntrance extends React.Component<IPureEntranceProps, IPureEntra
 	private performExit(): void {
 		this.props.onExit();
 
-		let newState: IPureEntranceState = { status: STATUS.EXITING };
+		const newState: IPureEntranceState = { status: STATUS.EXITING };
 		if(this.props.timeout) {
 			this.eventTimeout = window.setTimeout(this.handleTransitionEnd, this.props.timeout);
 		}
