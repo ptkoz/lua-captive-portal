@@ -5,19 +5,22 @@ import * as React from "react";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Route } from "react-router-dom";
-import { Geekness } from "./Geekness";
+import { withRouter } from "react-router";
+import { FadeResizeReplace } from "./transitions/FadeResizeReplace";
+import { Location } from "history";
+import { Content } from "./Content";
 
 /**
  * Props available on this component
  */
 export interface IRootProps {
-
+	location?: Location
 }
 
 /**
  * The component class
  */
-export class Root extends React.PureComponent<IRootProps, {}> {
+class Root extends React.PureComponent<IRootProps, {}> {
 	public render(): JSX.Element {
 		return (
 			<div style={{paddingTop: "50px"}}>
@@ -45,8 +48,9 @@ export class Root extends React.PureComponent<IRootProps, {}> {
 					</Navbar.Collapse>
 				</Navbar>
 
-				<Route path="/" exact component={Geekness}/>
-				<Route path="/geekness" component={Geekness}/>
+				<FadeResizeReplace>
+					<Route location={this.props.location} key={this.props.location.key} component={Content} />
+				</FadeResizeReplace>
 
 				<div className="container">
 					<hr/>
@@ -58,3 +62,6 @@ export class Root extends React.PureComponent<IRootProps, {}> {
 		);
 	}
 }
+
+const RootWithRouter = withRouter(Root);
+export { RootWithRouter as Root };

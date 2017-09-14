@@ -27,9 +27,9 @@ let appNode = document.getElementById("main");
  * OK, let's render the application.
  */
 render((
-	<ReduxProvider store={store}>
-		<Router>
+	<Router>
+		<ReduxProvider store={store}>
 			<Root />
-		</Router>
-	</ReduxProvider>
+		</ReduxProvider>
+	</Router>
 ), appNode);
