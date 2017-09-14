@@ -6,9 +6,9 @@ import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
-import { FadeResizeReplace } from "./transitions/FadeResizeReplace";
 import { Location } from "history";
 import { Content } from "./Content";
+import { FadeReplace } from "./transitions/FadeReplace";
 
 /**
  * Props available on this component
@@ -48,9 +48,9 @@ class Root extends React.PureComponent<IRootProps, {}> {
 					</Navbar.Collapse>
 				</Navbar>
 
-				<FadeResizeReplace>
+				<FadeReplace>
 					<Route location={this.props.location} key={this.props.location.key} component={Content} />
-				</FadeResizeReplace>
+				</FadeReplace>
 
 				<div className="container">
 					<hr/>

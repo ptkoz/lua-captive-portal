@@ -7,7 +7,7 @@ import { InputToken } from "./InputToken";
 import { InputButton } from "./InputButton";
 import { IState } from "../../state";
 import { connect } from "react-redux";
-import { FadeCollapse } from "../transitions/FadeCollapse";
+import { PureFade } from "../transitions/PureFade";
 
 /**
  * Props available on this component
@@ -31,9 +31,9 @@ class FormContent extends React.PureComponent<IFormContentProps, {}> {
 					</InputGroup.Button>
 				</InputGroup>
 				<HelpBlock>
-					<FadeCollapse show={this.props.hasError}>
+					<PureFade show={this.props.hasError}>
 						<Alert bsStyle="danger">{this.props.errorMessage}</Alert>
-					</FadeCollapse>
+					</PureFade>
 				</HelpBlock>
 			</FormGroup>
 		);

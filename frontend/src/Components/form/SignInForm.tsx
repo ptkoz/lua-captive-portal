@@ -22,7 +22,7 @@ export interface ISignInFormProps {
 class SignInForm extends React.PureComponent<ISignInFormProps, {}> {
 	public render(): JSX.Element {
 		return (
-			<Form style={{marginTop: "3em", marginBottom: "3em"}} onSubmit={this.props.onSubmit}>
+			<Form onSubmit={this.props.onSubmit}>
 				<Row>
 					<Col sm={10} smOffset={1} md={6} mdOffset={3}>
 						<FormContent />
