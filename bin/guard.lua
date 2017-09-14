@@ -16,7 +16,7 @@ local Arp = require "models.arp";
 io.stdout:write("Validating guest sessions.\n");
 
 -- iterate through rules
-local currentRules = io.popen("iptables -t mangle -vL allowed_guests");
+local currentRules = io.popen("iptables -t mangle -xnvL allowed_guests");
 for rule in currentRules:lines() do
     -- grab some basic metrics
     local outgoingPkts, outgoingBytes, macAddress = rule:match("%s*(%d+)%s+(%d+).-MAC%s+(%S+)");
@@ -24,6 +24,7 @@ for rule in currentRules:lines() do
     -- perform checks in pcall to catch errors
     local status, error = pcall(function(mac, pkts, bytes)
         if mac then
+            io.stdout:write("Validatig " .. assert(mac) .. "\n");
             local session = Session.new(mac);
 
             if session then
