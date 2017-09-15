@@ -77,7 +77,7 @@ function Session:restore()
 
         -- add lacking rule
         assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2 -c " .. self.pkts .. " " .. self.bytes) );
-    
+
         self.isDeployed = true;
     end;
 end

@@ -24,7 +24,7 @@ for rule in currentRules:lines() do
     -- perform checks in pcall to catch errors
     local status, error = pcall(function(mac, pkts, bytes)
         if mac then
-            io.stdout:write("Validatig " .. assert(mac) .. ".\n");
+            io.stdout:write("Validating " .. assert(mac) .. ".\n");
             local session = Session.byMac(mac);
 
             if session then
@@ -61,6 +61,8 @@ for rule in currentRules:lines() do
                     session:updateCounters(pkts, bytes);
                     session:extend();
                 end
+
+                io.stdout:write("Validation OK: " .. session.mac .. " (" .. session.ip .. ").\n");
             else
                 -- session does not exist, immediately delete rule!
                 io.stdout:write("Session for mac address <" .. mac .. "> does not exist, deleting rule.\n");
