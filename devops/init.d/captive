@@ -9,12 +9,14 @@ LIST_BIN="${CAPTIVE_PATH}/bin/list.lua"
 TKND_BIN="${CAPTIVE_PATH}/bin/tknd.lua"
 MKCRON_BIN="${CAPTIVE_PATH}/bin/onboot.sh"
 MKTOKEN_BIN="${CAPTIVE_PATH}/bin/mktoken.lua"
+RMSESSION_BIN="${CAPTIVE_PATH}/bin/rmsession.lua"
 
-EXTRA_COMMANDS="token guard restore list"
+EXTRA_COMMANDS="token guard restore list rm"
 EXTRA_HELP="	token	Generate token
 	guard	Run session validation
 	restore	Restore session firewall rules
-	list 	List active sessions"
+	list 	List active sessions
+	rm MAC	Delete session for given mac"
 
 restore() {
     $RESTORE_BIN 2>&1 | logger -t captive[$$] -p daemon.info
@@ -36,6 +38,10 @@ guard() {
 
 list() {
 	$LIST_BIN 2>&1
+}
+
+rm() {
+	$RMSESSION_BIN "$1" 2>&1
 }
 
 start_service() {
