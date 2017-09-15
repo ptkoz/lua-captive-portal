@@ -33,7 +33,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2 -j RETURN
 	
 	# Allow guests to display captive portal
-	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -d ROUTER_IP -j RETURN
+	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
 	
 	# Redirect http traffic to gateway
 	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -j REDIRECT --to-ports 1080
