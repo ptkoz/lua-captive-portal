@@ -12,12 +12,12 @@ function authController:token()
         self:setResponseStatus("400 Bad request");
         self.responseBody = '"Wpisz token w polu powyżej."';
     else
-        local token = Token.new(params.token);
+        local token = Token.byToken(params.token);
         if not token then
             -- token does not exist
             self:setResponseStatus("400 Bad request");
             self.responseBody = '"Wpisany token jest nieprawidłowy. Wygeneruj nowy token."';
-        else if token.expires <= os.time() then
+        else if not token.isValid then
             -- token has expired
             self:setResponseStatus("400 Bad request");
             self.responseBody = '"Ważność Twojego tokena wygasła. Wygeneruj nowy token."';
@@ -35,7 +35,7 @@ function authController:token()
             end
         end; end;
 
-        if not self.responseBody then
+        if 0 == self.responseBody:len() then
             self:setResponseStatus("400 Bad request");
             self.responseBody = '"Nie udało się zestawić bezpiecznego połączenia. Spróbuj ponownie później."';
         end;

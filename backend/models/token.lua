@@ -7,14 +7,19 @@ Token.__index = Token;
 local db = assert( require("library.database").getDatabase() );
 
 -- fetch token data from database
-function Token.new(token)
+function Token.byToken(token)
     local cur = db:query("SELECT * FROM tokens WHERE token = ?", token:upper());
     local res = cur:fetch({}, "a"); cur:close();
     cur:close();
 
     if not res then return nil; end;
+    return Token.factory(res);
+end
 
-    local self = setmetatable(res, Token);
+-- initialize Token
+function Token.factory(data)
+    local self = setmetatable(data, Token);
+    self.isValid = self.expires > os.time();
     return self;
 end
 

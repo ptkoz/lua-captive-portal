@@ -5,21 +5,37 @@ USE_PROCD=1
 START=99
 CAPTIVE_PATH=$(readlink -f $(dirname $(readlink -f "${initscript}"))/../..)
 GUARD_BIN="${CAPTIVE_PATH}/bin/guard.lua"
+RESTORE_BIN="${CAPTIVE_PATH}/bin/restore.lua"
+LIST_BIN="${CAPTIVE_PATH}/bin/list.lua"
 TKND_BIN="${CAPTIVE_PATH}/bin/tknd.lua"
-ONBOOT_BIN="${CAPTIVE_PATH}/bin/onboot.sh"
-TOKEN_BIN="${CAPTIVE_PATH}/bin/mktoken.lua"
-EXTRA_COMMANDS="token guard"
+MKCRON_BIN="${CAPTIVE_PATH}/bin/onboot.sh"
+MKTOKEN_BIN="${CAPTIVE_PATH}/bin/mktoken.lua"
+
+EXTRA_COMMANDS="token guard restore list"
+EXTRA_HELP="	token	Generate token
+	guard	Run session validation
+	restore	Restore session firewall rules
+	list 	List active sessions"
+
+restore() {
+    $RESTORE_BIN 2>&1 | logger -t captive[$$] -p daemon.info
+}
 
 boot() {
-    $ONBOOT_BIN 2>&1 | logger -t captive[$$] -p daemon.info
+    $MKCRON_BIN 2>&1 | logger -t captive[$$] -p daemon.info
+    restore
 }
 
 token() {
-	$TOKEN_BIN
+	$MKTOKEN_BIN 2>&1
 }
 
 guard() {
 	$GUARD_BIN 2>&1 | logger -t guard[$$] -p daemon.info
+}
+
+list() {
+	$LIST_BIN 2>&1
 }
 
 start_service() {

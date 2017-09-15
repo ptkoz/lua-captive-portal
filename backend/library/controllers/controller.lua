@@ -15,7 +15,7 @@ function Controller.new()
         ["Cache-Control"] = "no-store, no-cache, must-revalidate",
         ["Pragma"] = "no-cache",
         ["Expires"] = "Thu, 19 Nov 1981 08:52:00 GMT",
-        ["Date"] = os.date("%s, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t"))),
+        ["Date"] = os.date("%a, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t"))),
         ["Content-Type"] = "text/html; charset=UTF-8"
     }
 
