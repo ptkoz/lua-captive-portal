@@ -20,7 +20,14 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	
 3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone will be able to connect and see captive portal.
 
-4. Add custom firewall rules required by captive portal.
+4. Add custom firewall rules required by captive portal. You will need to install `iptables-mod-extra` if you have not do so yet.
+	```
+	opkg update
+	opkg install iptables-mod-extra
+	```
+
+	Then add rules below to your Network / Firewall / Custom Rules.
+
 	```bash
 	# Disable prerouting for validated guests
 	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2 -j RETURN
