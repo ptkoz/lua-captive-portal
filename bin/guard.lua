@@ -65,7 +65,7 @@ for rule in currentRules:lines() do
                 io.stdout:write("Validation OK: " .. session.mac .. " (" .. session.ip .. ").\n");
             else
                 -- session does not exist, immediately delete rule!
-                io.stdout:write("Session for mac address <" .. mac .. "> does not exist, deleting rule.\n");
+                io.stdout:write("Session for mac address " .. mac .. " does not exist, deleting rule.\n");
                 assert( os.execute("iptables -t mangle -D allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") );
                 return 0;
             end
