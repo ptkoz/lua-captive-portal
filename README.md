@@ -21,7 +21,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone will be able to connect and see captive portal.
 
 4. Add custom firewall rules required by captive portal.
-	```
+	```bash
 	# Disable prerouting for validated guests
 	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2 -j RETURN
 	
@@ -41,7 +41,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 5. Upload `lua-captive-portal` to some path on your router (eg. `/captive`).
 
 6. Create uhttpd configuration like this:
-	```
+	```text
 	config uhttpd 'auth'
     	option home '/captive/public_html'
 		option cgi_prefix '/cgi-bin'
@@ -74,26 +74,34 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	
 	And restart uhttpd by `/etc/init.d/uhttpd restart`
 	
-	If everything went good you should now see captive portal working once you connect to your guest WiFi network. To create
-	token you can use `/captive/bin/mktoken` or build a [token generator](https://github.com/pamelus/avr-token-generator).
+7. Link & enable init script that validates guest and restores sessions upon boot.
+
+```bash
+	ln -s /etc/init.d/captive /captive/devops/init.d/captive
+	/etc/init.d/captive enable
+	/etc/init.d/captive start
+```  
+	
+If everything went good you should now see captive portal working once you connect to your guest WiFi network. To create
+token you can use `/captive/bin/mktoken` or build a [token generator](https://github.com/pamelus/avr-token-generator).
 	
 ## Development requirements
 All you need is text editor and latest docker compose. You can deploy application locally by simply:
-```
+```bash
 docker-compose up
 ```
 
 Docker container binds localhost port 80 to lua CGI application, so simply go to `http://localhost` to see portal working.
 
 If you want to build frontend you will also need node.js and yarn / npm. For production build use:
-```
+```bash
 cd frontend
 yarn install
 yarn build
 ```
 
 For development you may want to enable continuous compilation with source maps. Enable it like this:
-```
+```bash
 cd frontend
 yarn install
 yarn watch
