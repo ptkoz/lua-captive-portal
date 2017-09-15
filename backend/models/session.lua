@@ -49,6 +49,12 @@ function Session:updateCounters(pkts, bytes)
     assert( db:query("UPDATE sessions SET pkts = ?, bytes = ? WHERE mac = ?", self.pkts, self.bytes, self.mac) );
 end
 
+-- update session's IP
+function Session:updateIp(ip)
+    self.ip = ip;
+    assert( db:query("UPDATE sessions SET ip = ? WHERE mac = ?", self.ip, self.mac) );
+end
+
 -- extend session lifetime
 function Session:extend()
     local maxExpire = self.created + 345600;
@@ -65,8 +71,14 @@ end
 -- restore session into iptables
 function Session:restore()
     if not self.isDeployed then
-        self.isDeployed = true;
+        -- after reboot ip may change - delete old IP from session data
+        -- guard will set new IP once available
+        self:updateIp(nil);
+
+        -- add lacking rule
         assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2 -c " .. self.pkts .. " " .. self.bytes) );
+    
+        self.isDeployed = true;
     end;
 end
 

@@ -37,6 +37,11 @@ for rule in currentRules:lines() do
 
                 local currentIp = Arp.findIpByMac(mac);
 
+                -- this is only allowed after restore
+                if currentIp and not session.ip then
+                    io.stdout:write("Updating session IP address to " .. currentIp .. " after restore.\n");
+                    session:updateIp(currentIp);
+                end
 
                 -- if IP has been changed, then something is wrong and probably
                 -- someone is spoofing MAC address to gain network access
