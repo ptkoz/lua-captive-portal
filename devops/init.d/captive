@@ -24,6 +24,7 @@ restore() {
 boot() {
     $MKCRON_BIN 2>&1 | logger -t captive[$$] -p daemon.info
     restore
+    start "$@"
 }
 
 token() {
