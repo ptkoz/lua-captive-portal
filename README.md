@@ -83,7 +83,8 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 ```  
 	
 If everything went good you should now see captive portal working once you connect to your guest WiFi network. To create
-token you can use `/captive/bin/mktoken` or build a [token generator](https://github.com/pamelus/avr-token-generator).
+token you can use `/etc/init.d/captive token` or build a [token generator](https://github.com/pamelus/avr-token-generator). To list
+active sessions use `/etc/init.d/captive list`.
 	
 ## Development requirements
 All you need is text editor and latest docker compose. You can deploy application locally by simply:
