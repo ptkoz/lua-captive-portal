@@ -1,5 +1,4 @@
 #!/bin/sh /etc/rc.common
-# Guest Guard init script to handle validate guest sessions
 
 USE_PROCD=1
 START=99
