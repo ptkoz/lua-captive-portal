@@ -16,7 +16,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	* Source zone: guest
 	* Destination zone: wan
 	* Action: accept
-	* Extra arguments: `-m mark --mark 0x2`
+	* Extra arguments: `-m mark --mark 0x2/0xf`
 	
 3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone will be able to connect and see captive portal.
 
@@ -29,8 +29,8 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	Then add rules below to your Network / Firewall / Custom Rules.
 
 	```bash
-	# Disable prerouting for validated guests
-	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2 -j RETURN
+	# Disable redirect for validated guests
+	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2/0xf -j RETURN
 	
 	# Allow guests to display captive portal
 	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN

@@ -37,7 +37,7 @@ function Session.factory(data)
     self.isValid = self.expires > os.time();
 
     -- session is deployed when ipdatbles rule is present
-    self.isDeployed = 0 == os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2 2>/dev/null");
+    self.isDeployed = 0 == os.execute("iptables -t mangle -C allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2/0xf 2>/dev/null");
 
     return self;
 end
@@ -76,7 +76,7 @@ function Session:restore()
         self:updateIp(nil);
 
         -- add lacking rule
-        assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2 -c " .. self.pkts .. " " .. self.bytes) );
+        assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2/0xf -c " .. self.pkts .. " " .. self.bytes) );
 
         self.isDeployed = true;
     end;
@@ -86,7 +86,7 @@ end
 function Session:delete()
     assert( db:query("DELETE FROM sessions WHERE mac = ?", self.mac) );
     if self.isDeployed then
-        assert( os.execute("iptables -t mangle -D allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2") );
+        assert( os.execute("iptables -t mangle -D allowed_guests -m mac --mac-source " .. self.mac .. " -j MARK --set-mark 0x2/0xf") );
     end;
     self = nil;
 end
@@ -128,7 +128,7 @@ function Session.create(ip, mac)
     -- put session into database; this will return nil in
     -- case of duplicated mac or 1 otherwise.
     if assert(db:query("INSERT INTO sessions (mac, created, expires, ip) VALUES(?, ?, ?, ?)", mac:upper(), os.time(), expires, ip)) then
-        assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2") );
+        assert( os.execute("iptables -t mangle -A allowed_guests -m mac --mac-source " .. mac .. " -j MARK --set-mark 0x2/0xf") );
         return true;
     else
         return false;
