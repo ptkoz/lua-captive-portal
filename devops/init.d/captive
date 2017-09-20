@@ -7,7 +7,7 @@ GUARD_BIN="${CAPTIVE_PATH}/bin/guard.lua"
 RESTORE_BIN="${CAPTIVE_PATH}/bin/restore.lua"
 LIST_BIN="${CAPTIVE_PATH}/bin/list.lua"
 TKND_BIN="${CAPTIVE_PATH}/bin/tknd.lua"
-MKCRON_BIN="${CAPTIVE_PATH}/bin/onboot.sh"
+MKCRON_BIN="${CAPTIVE_PATH}/bin/mkcron.sh"
 MKTOKEN_BIN="${CAPTIVE_PATH}/bin/mktoken.lua"
 RMSESSION_BIN="${CAPTIVE_PATH}/bin/rmsession.lua"
 
