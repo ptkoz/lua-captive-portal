@@ -29,8 +29,7 @@ export interface IPlainAction extends IAction {
 }
 
 /**
- * Decorator for action class to set Type property on
- * class prototype.
+ * Interfacte for IAction class itself.
  */
 interface IActionClass<T extends IPlainAction> {
 	prototype?: T;
