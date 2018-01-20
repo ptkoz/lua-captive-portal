@@ -4,6 +4,8 @@
 This is simple captive portal used by me in conjunction with my [AVR token generator](https://github.com/pamelus/avr-token-generator) for [LEDE](https://lede-project.org). 
 It provides user interface for token authentication and api controlling unit for avr-token-generator. Appropriate firewall rules are created automatically. Internet access is given per MAC address after successful token validation.
 
+[![View demo video](https://img.youtube.com/vi/p0FRlCpmJHw/0.jpg)](https://www.youtube.com/watch?v=p0FRlCpmJHw)
+
 ## Running captive portal on LEDE
 You need to configure your LEDE a bit to make magic happen. This guide assumes that you have already [configured a guest WLAN on your device](https://wiki.openwrt.org/doc/recipes/guest-wlan-webinterface).
 
