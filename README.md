@@ -1,13 +1,13 @@
-# Captive portal for LEDE written in LUA
+# Captive portal for OpenWRT written in LUA
 
 ## Overview
-This is simple captive portal used by me in conjunction with my [AVR token generator](https://github.com/pamelus/avr-token-generator) for [LEDE](https://lede-project.org). 
+This is simple captive portal used by me in conjunction with my [AVR token generator](https://github.com/pamelus/avr-token-generator) for [OpenWRT](http://openwrt.org/). 
 It provides user interface for token authentication and api controlling unit for avr-token-generator. Appropriate firewall rules are created automatically. Internet access is given per MAC address after successful token validation.
 
 [![View demo video](https://img.youtube.com/vi/p0FRlCpmJHw/0.jpg)](https://www.youtube.com/watch?v=p0FRlCpmJHw)
 
-## Running captive portal on LEDE
-You need to configure your LEDE a bit to make magic happen. This guide assumes that you have already [configured a guest WLAN on your device](https://wiki.openwrt.org/doc/recipes/guest-wlan-webinterface).
+## Running captive portal on OpenWRT
+You need to configure your OpenWRT a bit to make magic happen. This guide assumes that you have already [configured a guest WLAN on your device](https://wiki.openwrt.org/doc/recipes/guest-wlan-webinterface).
 
 Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with captive portal.
 
@@ -25,7 +25,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 4. Add custom firewall rules required by captive portal. You will need to install `iptables-mod-extra` if you have not do so yet.
 	```
 	opkg update
-	opkg install iptables-mod-extra
+	opkg install iptables-mod-extra ip6tables-extra
 	```
 
 	Then add rules below to your Network / Firewall / Custom Rules.
@@ -47,7 +47,12 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 
 	```
 	
-5. Upload `lua-captive-portal` to some path on your router (eg. `/captive`).
+5. Upload `lua-captive-portal` to some path on your router (eg. `/captive`). Install captive portal requirements:
+
+    ```
+    opkg update
+    opkg install libsqlite3 luasql-sqlite3
+    ```
 
 6. Create uhttpd configuration like this:
 	```text
