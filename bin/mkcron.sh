@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -f "/etc/crontabs/root" ] && grep -q '/etc/init.d/captive guard' /etc/crontabs/root; then
 	echo "Captive guard cron present."
