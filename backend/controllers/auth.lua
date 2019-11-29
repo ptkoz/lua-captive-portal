@@ -6,21 +6,22 @@ local Arp = require "models.arp";
 -- authentication by token
 function authController:token()
     local params = require "library.input".parse(authController:fetchPostData());
+    local L = require "library.language".load(authController:fetchAcceptLanguage());
     self:setResponseHeader("Content-Type", "application/json; charset=UTF-8");
 
     if not params.token or 0 == params.token:len() then
         self:setResponseStatus("400 Bad request");
-        self.responseBody = '"Wpisz token w polu powyżej."';
+        self.responseBody = '"' .. L["Enter the token in the field above."] .. '"';
     else
         local token = Token.byToken(params.token);
         if not token then
             -- token does not exist
             self:setResponseStatus("400 Bad request");
-            self.responseBody = '"Wpisany token jest nieprawidłowy. Wygeneruj nowy token."';
+            self.responseBody = '"' .. L["The token you entered is invalid. Generate a new token."] .. '"';
         else if not token.isValid then
             -- token has expired
             self:setResponseStatus("400 Bad request");
-            self.responseBody = '"Ważność Twojego tokena wygasła. Wygeneruj nowy token."';
+            self.responseBody = '"' .. L["Your token has expired. Generate a new token."] .. '"';
         else
             local macAddress = Arp.findMacByIp(os.getenv("REMOTE_ADDR"));
             if macAddress then
@@ -37,7 +38,7 @@ function authController:token()
 
         if 0 == self.responseBody:len() then
             self:setResponseStatus("400 Bad request");
-            self.responseBody = '"Nie udało się zestawić bezpiecznego połączenia. Spróbuj ponownie później."';
+            self.responseBody = '"' .. L["A secure connection could not be established. Please try again later."] .. '"';
         end;
     end;
 end

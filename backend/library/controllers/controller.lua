@@ -32,6 +32,18 @@ function Controller:fetchPostData()
     return io.read("*all");
 end
 
+-- get accept language list -- en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6
+function Controller:fetchAcceptLanguage()
+    local langs = {}
+    for patt in string.gmatch(os.getenv("HTTP_ACCEPT_LANGUAGE") or "en-US,en;q=0.9", "([^,]+)") do
+        local lang = string.match(patt, "([^;]+)")
+        if lang then
+            table.insert(langs, lang)
+        end
+    end
+    return langs
+end
+
 -- Set / replace response header
 function Controller:setResponseHeader(name, value)
     self.responseHeaders[name] = value;
