@@ -1,7 +1,9 @@
 var webpack = require('webpack');
+var UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 module.exports = {
+	mode: "production",
 	entry: "src/index.tsx",
 	output: {
 		path: __dirname + '/../public_html/js',
@@ -30,21 +32,27 @@ module.exports = {
 		modules: false,
 		colors: true
 	},
+	performance: {
+		hints: false
+	},
 	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-			minimize: true,
-			sourceMap: false,
-			output: {
-				comments: false
-			},
-			compress: {
-				warnings: false
-			}
-		}),
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: JSON.stringify("production")
 			}
 		})
-	]
+	],
+	optimization: {
+		minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: false,
+        uglifyOptions: {
+					output: {
+						comments: false
+					},
+					warnings: false
+        }
+      })
+    ]
+	}
 };

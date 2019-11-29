@@ -159,7 +159,7 @@ export class FadeResizeReplace extends React.PureComponent<{}, IFadeReplaceState
 	 * We need to reset this setting back to normal state.
 	 */
 	private preventScroll = (event): void => {
-		const scrollingNode = findDOMNode(this);
+		const scrollingNode = findDOMNode(this) as HTMLElement;
 		if(scrollingNode.scrollLeft != 0) {
 			scrollingNode.scrollLeft = 0;
 		}

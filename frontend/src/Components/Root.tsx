@@ -5,16 +5,14 @@ import * as React from "react";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Route } from "react-router-dom";
-import { withRouter } from "react-router";
-import { Location } from "history";
+import { withRouter, RouteComponentProps } from "react-router";
 import { Content } from "./Content";
 import { FadeReplace } from "./transitions/FadeReplace";
 
 /**
  * Props available on this component
  */
-export interface IRootProps {
-	location?: Location;
+export interface IRootProps extends RouteComponentProps {
 }
 
 /**
@@ -49,7 +47,9 @@ class Root extends React.PureComponent<IRootProps, {}> {
 				</Navbar>
 
 				<FadeReplace>
-					<Route location={this.props.location} key={this.props.location.key} component={Content} />
+					<Route location={this.props.location} key={this.props.location.key}>
+						<Content/>
+					</Route>
 				</FadeReplace>
 
 				<div className="container">
