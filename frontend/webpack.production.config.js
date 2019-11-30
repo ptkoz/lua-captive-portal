@@ -1,5 +1,7 @@
+var path = require('path');
 var webpack = require('webpack');
-var UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 module.exports = {
@@ -40,7 +42,15 @@ module.exports = {
 			"process.env": {
 				NODE_ENV: JSON.stringify("production")
 			}
-		})
+		}),
+    // copy custom static assets
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, "assets"),
+        to: '../assets/',
+        ignore: ['.*'],
+      },
+    ])
 	],
 	optimization: {
 		minimizer: [

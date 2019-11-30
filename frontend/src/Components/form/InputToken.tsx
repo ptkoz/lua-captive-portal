@@ -6,6 +6,7 @@ import { FormControl, FormControlProps } from "react-bootstrap";
 import { connect } from "react-redux";
 import { IState } from "../../state";
 import { SetToken } from "../../actions";
+import { useTranslation } from "react-i18next";
 
 interface IInputTokenStateProps {
 	disabled: boolean;
@@ -17,11 +18,14 @@ interface IInputTokenDispatchProps {
 	onChange(event: any): void;
 }
 
-const mapStateToProps = (state: IState): IInputTokenStateProps => ({
-	disabled: state.isLoading,
-	value: state.token,
-	placeholder: "Wpisz swój token"
-});
+const mapStateToProps = (state: IState): IInputTokenStateProps => {
+	const { t } = useTranslation();
+	return {
+		disabled: state.isLoading,
+		value: state.token,
+		placeholder: t("Enter your token"),
+	};
+};
 
 const mapDispatchToProps = (dispatch): IInputTokenDispatchProps => ({
 	onChange: (event): void => {

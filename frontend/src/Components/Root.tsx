@@ -6,13 +6,14 @@ import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Route } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Content } from "./Content";
 import { FadeReplace } from "./transitions/FadeReplace";
 
 /**
  * Props available on this component
  */
-export interface IRootProps extends RouteComponentProps {
+export interface IRootProps extends RouteComponentProps, WithTranslation {
 }
 
 /**
@@ -26,7 +27,7 @@ class Root extends React.PureComponent<IRootProps, {}> {
 					<Navbar.Header>
 						<Navbar.Brand>
 							<LinkContainer to="/" exact={true}>
-								<a href="/" className="navbar-brand">FC Goście</a>
+								<a href="/" className="navbar-brand">{this.props.t("FC Visitors")}</a>
 							</LinkContainer>
 						</Navbar.Brand>
 						<Navbar.Toggle />
@@ -34,13 +35,13 @@ class Root extends React.PureComponent<IRootProps, {}> {
 					<Navbar.Collapse>
 						<Nav pullRight={true}>
 							<LinkContainer to="/" exact={true}>
-								<NavItem eventKey={1}>Logowanie</NavItem>
+								<NavItem eventKey={1}>{this.props.t("Log in")}</NavItem>
 							</LinkContainer>
 							<LinkContainer to="/motivation">
-								<NavItem eventKey={2}>Dlaczego token zamiast hasła</NavItem>
+								<NavItem eventKey={2}>{this.props.t("Why token instead of password")}</NavItem>
 							</LinkContainer>
 							<LinkContainer to="/geekness">
-								<NavItem eventKey={3}>Że też Ci się chciało</NavItem>
+								<NavItem eventKey={3}>{this.props.t("That you also wanted to know")}</NavItem>
 							</LinkContainer>
 						</Nav>
 					</Navbar.Collapse>
@@ -55,7 +56,7 @@ class Root extends React.PureComponent<IRootProps, {}> {
 				<div className="container">
 					<hr/>
 					<footer>
-						<p>&copy; Patryk Kozłowski {(new Date()).getFullYear()}</p>
+						<p>&copy; Patryk Kozłowski {(new Date()).getFullYear()} {this.props.t("FOOTER_SUFFIX")}</p>
 					</footer>
 				</div>
 			</div>
@@ -64,4 +65,5 @@ class Root extends React.PureComponent<IRootProps, {}> {
 }
 
 const RootWithRouter = withRouter(Root);
-export { RootWithRouter as Root };
+const RootWithI18n = withTranslation()(RootWithRouter);
+export { RootWithI18n as Root };

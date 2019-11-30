@@ -4,6 +4,8 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware, compose, Store } from "redux";
 import { Provider as ReduxProvider } from "react-redux";
 import { MemoryRouter } from "react-router";
+
+import "./i18n";
 import { Root } from "./Components/Root";
 import { IState } from "./state";
 import { reducer } from "./reducer";
@@ -32,7 +34,7 @@ const appNode = document.getElementById("main");
 render((
 	<MemoryRouter initialEntries={appNode.dataset.href ? [appNode.dataset.href] : ["/"]}>
 		<ReduxProvider store={store}>
-			<Root />
+			<React.Suspense fallback="Loading..."><Root /></React.Suspense>
 		</ReduxProvider>
 	</MemoryRouter>
 ), appNode);
