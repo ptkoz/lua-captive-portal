@@ -5,7 +5,7 @@ if [[ "$1" == "" ]] || [[ "$2" == "" ]]; then
 	exit 1;
 fi
 
-SOURCE=$( readlink -f "$(dirname "$0")/.." )
+SOURCE=$( realpath "$( dirname $(realpath "$0") )/.." )
 TARGET_HOST="${1}"
 TARGET="root@${TARGET_HOST}:/mnt/ext/auth"
 DOMAIN="${2}"
