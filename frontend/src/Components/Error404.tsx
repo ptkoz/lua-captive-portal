@@ -9,14 +9,14 @@ import { LinkContainer } from "react-router-bootstrap";
 /**
  * Props available on this component
  */
-export interface IError404Props extends WithTranslation {
+export interface IError404Props {
 
 }
 
 /**
  * The component class
  */
-class Error404 extends React.PureComponent<IError404Props, {}> {
+class Error404 extends React.PureComponent<IError404Props & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<div>

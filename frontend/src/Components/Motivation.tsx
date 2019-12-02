@@ -7,14 +7,14 @@ import { withTranslation, WithTranslation } from "react-i18next";
 /**
  * Props available on this component
  */
-export interface IMotivationProps extends WithTranslation {
+export interface IMotivationProps {
 
 }
 
 /**
  * The component class
  */
-class Motivation extends React.PureComponent<IMotivationProps, {}> {
+class Motivation extends React.PureComponent<IMotivationProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<div className="container">

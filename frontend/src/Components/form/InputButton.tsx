@@ -10,14 +10,14 @@ import { IState } from "../../state";
 /**
  * Props available on this component
  */
-interface IInputButtonProps extends WithTranslation {
+interface IInputButtonProps {
 	isLoading: boolean;
 }
 
 /**
  * The component class
  */
-class InputButton extends React.PureComponent<IInputButtonProps, {}> {
+class InputButton extends React.PureComponent<IInputButtonProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		let indicator: JSX.Element = null;
 

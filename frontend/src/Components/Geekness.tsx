@@ -7,14 +7,14 @@ import { withTranslation, WithTranslation } from "react-i18next";
 /**
  * Props available on this component
  */
-export interface IGeeknessProps extends WithTranslation {
+export interface IGeeknessProps {
 
 }
 
 /**
  * The component class
  */
-class Geekness extends React.PureComponent<IGeeknessProps, {}> {
+class Geekness extends React.PureComponent<IGeeknessProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<div className="container">

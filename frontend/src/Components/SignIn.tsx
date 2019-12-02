@@ -10,7 +10,7 @@ import { PureCollapse } from "./transitions/PureCollapse";
 /**
  * Props available on this component
  */
-interface ISignInProps extends WithTranslation {
+interface ISignInProps {
 
 }
 
@@ -21,7 +21,7 @@ interface ISignInState {
 /**
  * The component class
  */
-class SignIn extends React.PureComponent<ISignInProps, ISignInState> {
+class SignIn extends React.PureComponent<ISignInProps & WithTranslation, ISignInState> {
 	public constructor(props) {
 		super(props);
 

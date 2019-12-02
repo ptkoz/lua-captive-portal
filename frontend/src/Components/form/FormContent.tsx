@@ -2,11 +2,12 @@
  * Component description goes here
  */
 import * as React from "react";
+import { connect } from "react-redux";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Alert, FormGroup, HelpBlock, InputGroup } from "react-bootstrap";
 import { InputToken } from "./InputToken";
 import { InputButton } from "./InputButton";
 import { IState } from "../../state";
-import { connect } from "react-redux";
 import { PureFade } from "../transitions/PureFade";
 
 /**
@@ -20,12 +21,12 @@ export interface IFormContentProps {
 /**
  * The component class
  */
-class FormContent extends React.PureComponent<IFormContentProps, {}> {
+class FormContent extends React.PureComponent<IFormContentProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<FormGroup validationState={this.props.hasError ? "error" : null}>
 				<InputGroup bsSize="lg">
-					<InputToken />
+					<InputToken placeholder={this.props.t("Enter your token")}/>
 					<InputGroup.Button>
 						<InputButton/>
 					</InputGroup.Button>
@@ -48,5 +49,6 @@ const mapStateToProps = (state: IState): IFormContentProps => ({
 	errorMessage: state.errorMessage
 });
 
-const FormContentConnected = connect<IFormContentProps, {}, {}>(mapStateToProps)(FormContent);
+const FormContentWithI18n = withTranslation()(FormContent);
+const FormContentConnected = connect<IFormContentProps, {}, {}>(mapStateToProps)(FormContentWithI18n);
 export { FormContentConnected as FormContent };

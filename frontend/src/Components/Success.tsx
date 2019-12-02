@@ -8,14 +8,14 @@ import { withTranslation, WithTranslation } from "react-i18next";
 /**
  * Props available on this component
  */
-export interface ISuccessProps extends WithTranslation {
+export interface ISuccessProps {
 
 }
 
 /**
  * The component class
  */
-class Success extends React.PureComponent<ISuccessProps, {}> {
+class Success extends React.PureComponent<ISuccessProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<Jumbotron>
