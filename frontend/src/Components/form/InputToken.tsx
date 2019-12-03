@@ -1,7 +1,6 @@
 /**
  * Component description goes here
  */
-import * as React from "react";
 import { FormControl, FormControlProps } from "react-bootstrap";
 import { connect } from "react-redux";
 import { IState } from "../../state";
@@ -10,7 +9,6 @@ import { SetToken } from "../../actions";
 interface IInputTokenStateProps {
 	disabled: boolean;
 	value: string;
-	placeholder: string;
 }
 
 interface IInputTokenDispatchProps {
@@ -20,7 +18,6 @@ interface IInputTokenDispatchProps {
 const mapStateToProps = (state: IState): IInputTokenStateProps => ({
 	disabled: state.isLoading,
 	value: state.token,
-	placeholder: "Wpisz swój token"
 });
 
 const mapDispatchToProps = (dispatch): IInputTokenDispatchProps => ({

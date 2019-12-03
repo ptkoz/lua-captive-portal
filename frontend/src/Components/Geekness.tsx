@@ -2,6 +2,7 @@
  * Component description goes here
  */
 import * as React from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 
 /**
  * Props available on this component
@@ -13,16 +14,19 @@ export interface IGeeknessProps {
 /**
  * The component class
  */
-export class Geekness extends React.PureComponent<IGeeknessProps, {}> {
+class Geekness extends React.PureComponent<IGeeknessProps & WithTranslation, {}> {
 	public render(): JSX.Element {
 		return (
 			<div className="container">
-				<h1>Dlaczego mi się chciało</h1>
-				<p className="text-justify lead">Tyle godzin roboty, zarwane weekendowe noce i to wszystko tylko po, żeby robić dokładnie to samo co robisz w pracy. Przecież to jakaś paranoja, jesteś nienormalny.</p>
-				<p className="text-justify">Ciężko to będzie wyjaśnić laikowi, ale budowanie tego projektu nie jest ani trochę zbliżone do tego, czym zajmuję się zawodowo. To dwa różne światy i właśnie dzięki temu mogłem w końcu <strong>ODPOCZĄĆ</strong> od pracy i zająć głowę czymś z zupełnie innym.</p>
-				<p className="text-justify">Pisanie oprogramowania dla mikrokontrolera to zabawa w najczystszej postaci. Nie ma systemu operacyjnego, nie ma systemów plików, generalnie nie ma nic - ale jakoś trzeba sobie poradzić. Sam captive portal również specjalnie napisałem w języku Lua, który - w porównaniu do tego, czego używam w pracy - jest po prostu hardcorowo niskopoziomowy.</p>
-				<p className="text-justify">Potraktuj więc to proszę jako poszerzanie horyzontów, na którym wszyscy skorzystali.</p>
+				<h1>{this.props.t("Why did I want to")}</h1>
+				<p className="text-justify lead">{this.props.t("So many hours of work, late weekend nights and all just to do exactly what you do at work. It's some kind of paranoia, you're insane.")}</p>
+				<p className="text-justify">{this.props.t("It will be difficult to explain to a layman, but building this project is not at all similar to what I do professionally. They are two different worlds and that's why I could finally ")}<strong>{this.props.t("REST")}</strong>{this.props.t(" from work and take care of something completely different.")}</p>
+				<p className="text-justify">{this.props.t("Writing software for a microcontroller is fun in its purest form. There is no operating system, no file systems, generally nothing - but somehow you have to deal with it. The captive portal itself was also specially written in Lua, which - compared to what I use at work - is simply hardcore low-level.")}</p>
+				<p className="text-justify">{this.props.t("So please treat it as broadening the horizons that everyone has benefited from.")}</p>
 			</div>
 		);
 	}
 }
+
+const GeeknessWithI18n = withTranslation()(Geekness);
+export { GeeknessWithI18n as Geekness };

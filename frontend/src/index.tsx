@@ -1,9 +1,11 @@
 import * as React from "react";
 import { render } from "react-dom";
 
-import { createStore, applyMiddleware, compose, Store, GenericStoreEnhancer } from "redux";
+import { createStore, applyMiddleware, compose, Store } from "redux";
 import { Provider as ReduxProvider } from "react-redux";
 import { MemoryRouter } from "react-router";
+
+import "./i18n";
 import { Root } from "./Components/Root";
 import { IState } from "./state";
 import { reducer } from "./reducer";
@@ -17,7 +19,7 @@ let middleware = applyMiddleware(tsFsaMiddleWare);
 // noinspection TypeScriptUnresolvedVariable
 if("production" !== process.env.NODE_ENV) {
 	if(window["devToolsExtension"]) {
-		middleware = compose(middleware, window["devToolsExtension"]()) as GenericStoreEnhancer;
+		middleware = compose(middleware, window["devToolsExtension"]());
 	}
 }
 
@@ -32,7 +34,7 @@ const appNode = document.getElementById("main");
 render((
 	<MemoryRouter initialEntries={appNode.dataset.href ? [appNode.dataset.href] : ["/"]}>
 		<ReduxProvider store={store}>
-			<Root />
+			<React.Suspense fallback="Loading..."><Root /></React.Suspense>
 		</ReduxProvider>
 	</MemoryRouter>
 ), appNode);

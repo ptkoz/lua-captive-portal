@@ -2,6 +2,7 @@ var webpack = require('webpack');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 module.exports = {
+	mode: "development",
 	entry: "src/index.tsx",
 	output: {
 		path: __dirname + '/../public_html/js',
