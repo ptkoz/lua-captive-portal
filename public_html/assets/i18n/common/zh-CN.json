@@ -22,10 +22,10 @@
   "For a change, the token has only a few characters. This can be because it only works for a few minutes after being generated. Thanks to this, it ensures a level of security similar to that of a long password.": "因此我们做出改变，验证码必须简短，而为了安全简短就必须缩短它的生命周期到几分钟，从而保证其安全性不亚于长密码。",
   "In addition, the token is handled via a friendly web interface, so even if you rewrite it incorrectly, you'll have the chance to see where you made the mistake and quickly correct it.": "另外，验证码由一个友好的网页提供认证服务，所以当你输入错误时，你可以回头检查哪里输错了，从而快速修正。",
   "Easier login for you ...": "更便捷的认证方式……",
-  "Of course, motivation is not everything. I had a lot of fun building and programming the entire system. As a result, you have easier access to the internet and I am happier. Win-win. ;-)": "当然，动机不是一切，编写整套系统十分有趣，而带来的结果是你获得了快速联网的体验而我很开心，双赢(*^▽^*)",
+  "Of course, motivation is not everything. I had a lot of fun building and programming the entire system. As a result, you have easier access to the internet and I am happier. Win-win. ;-)": "当然，除了以上原因原因，编写整套系统还十分有趣。系统完成后，你获得了快速联网的体验，而我感到很开心，这看起来是一种双赢(*^▽^*)",
   "Why did I want to": "为什么我要这么做",
-  "So many hours of work, late weekend nights and all just to do exactly what you do at work. It's some kind of paranoia, you're insane.": "花费很多心思，周末的通宵达旦做这些和工作一样的事情，某种程度上像是一个偏执狂，一个疯子。",
-  "It will be difficult to explain to a layman, but building this project is not at all similar to what I do professionally. They are two different worlds and that's why I could finally ": "有时候很难向一个外行解释，但是编写这样一个项目和我的工作专业不尽相同，它们是完全不同的两个事物，因此做这些事情对我而言也是一种工作之余的",
+  "So many hours of work, late weekend nights and all just to do exactly what you do at work. It's some kind of paranoia, you're insane.": "“为什么要花费很多心思，周末的还要通宵达旦做这些和工作一样的事情，这人有点偏执狂，是不是有毛病。”",
+  "It will be difficult to explain to a layman, but building this project is not at all similar to what I do professionally. They are two different worlds and that's why I could finally ": "有时候很难向一个外行解释，但是编写这样一个项目和我的专业工作不尽相同，它们是完全不同的两个事物，因此做这些事情对我而言也是一种工作之余的",
   "REST": "放松",
   " from work and take care of something completely different.": "。",
   "Writing software for a microcontroller is fun in its purest form. There is no operating system, no file systems, generally nothing - but somehow you have to deal with it. The captive portal itself was also specially written in Lua, which - compared to what I use at work - is simply hardcore low-level.": "编写微处理程序是一件很有趣的事情，它没有高级操作系统，没有文件系统，甚至可以说什么都没有，但是你必须做些什么来处理它。这个网络认证系统自身也是使用 Lua 语言编写，和我工作相比它比较底层。",
@@ -36,5 +36,5 @@
   "Return to login page": "返回登录页面",
   "Next": "下一步",
   "Enter your token": "输入验证码",
-  "FOOTER_SUFFIX": " - 翻译： 茗伊"
+  "FOOTER_SUFFIX": " - 茗伊 (译)"
 }
