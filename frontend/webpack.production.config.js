@@ -43,26 +43,26 @@ module.exports = {
 				NODE_ENV: JSON.stringify("production")
 			}
 		}),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.join(__dirname, "assets"),
-        to: '../assets/',
-        ignore: ['.*'],
-      },
-    ])
+		// copy custom static assets
+		new CopyWebpackPlugin([
+			{
+				from: path.join(__dirname, "assets"),
+				to: '../assets/',
+				ignore: ['.*']
+			},
+		])
 	],
 	optimization: {
 		minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: false,
-        uglifyOptions: {
+			new UglifyJsPlugin({
+				sourceMap: false,
+				uglifyOptions: {
 					output: {
 						comments: false
 					},
 					warnings: false
-        }
-      })
-    ]
+				}
+			})
+		]
 	}
 };
