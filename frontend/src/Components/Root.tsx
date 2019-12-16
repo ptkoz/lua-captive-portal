@@ -2,6 +2,7 @@
  * Component description goes here
  */
 import * as React from "react";
+import DocumentMeta from "react-document-meta";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Route } from "react-router-dom";
@@ -13,13 +14,34 @@ import { FadeReplace } from "./transitions/FadeReplace";
 /**
  * Props available on this component
  */
-export interface IRootProps extends RouteComponentProps, WithTranslation {
+export interface IRootProps {
 }
 
 /**
  * The component class
  */
-class Root extends React.PureComponent<IRootProps, {}> {
+class Root extends React.PureComponent<IRootProps & RouteComponentProps & WithTranslation, {}> {
+	public componentDidMount() {
+		// Translate document title
+		document.title = this.props.t("FC Visitors - Captive Portal");
+		// Translate description meta element
+		let descEl: HTMLMetaElement = document.querySelector("meta[name=\"description\"]");
+		if (!descEl) {
+			descEl = document.createElement("meta");
+			descEl.setAttribute("name", "description");
+			document.head.appendChild(descEl);
+		}
+		descEl.setAttribute("content", this.props.t("FC visitors captive portal"));
+		// Translate author meta element
+		let authEl: HTMLMetaElement = document.querySelector("meta[name=\"author\"]");
+		if (!authEl) {
+			authEl = document.createElement("meta");
+			authEl.setAttribute("name", "author");
+			document.head.appendChild(authEl);
+		}
+		authEl.setAttribute("content", this.props.t("AUTHOR") + this.props.t("AUTHOR_SUFFIX"));
+	}
+
 	public render(): JSX.Element {
 		return (
 			<div style={{paddingTop: "50px"}}>
@@ -56,7 +78,7 @@ class Root extends React.PureComponent<IRootProps, {}> {
 				<div className="container">
 					<hr/>
 					<footer>
-						<p>&copy; Patryk Kozłowski {(new Date()).getFullYear()} {this.props.t("FOOTER_SUFFIX")}</p>
+						<p>&copy; {this.props.t("AUTHOR")} {(new Date()).getFullYear()} {this.props.t("AUTHOR_SUFFIX")}</p>
 					</footer>
 				</div>
 			</div>

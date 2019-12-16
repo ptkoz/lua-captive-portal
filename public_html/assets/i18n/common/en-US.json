@@ -1,4 +1,6 @@
 {
+  "FC Visitors - Captive Portal": "FC Visitors - Captive Portal",
+  "FC visitors captive portal": "FC visitors captive portal",
   "FC Visitors": "FC Visitors",
   "Log in": "Log in",
   "Why token instead of password": "Why token instead of password",
@@ -36,5 +38,6 @@
   "Return to login page": "Return to login page",
   "Next": "Next",
   "Enter your token": "Enter your token",
-  "FOOTER_SUFFIX": " - Traslated by Emil Zhai"
+  "AUTHOR": "Patryk Kozłowski",
+  "AUTHOR_SUFFIX": " - Traslated by Emil Zhai"
 }
