@@ -1,4 +1,6 @@
 {
+  "FC Visitors - Captive Portal": "FC 访客 - 强制门户认证系统",
+  "FC visitors captive portal": "FC 访客强制门户认证系统",
   "FC Visitors": "FC 认证",
   "Log in": "登录",
   "Why token instead of password": "为什么选择验证码而非使用密码",
@@ -36,5 +38,6 @@
   "Return to login page": "返回登录页面",
   "Next": "下一步",
   "Enter your token": "输入验证码",
-  "FOOTER_SUFFIX": " - 茗伊 (译)"
+  "AUTHOR": "Patryk Kozłowski",
+  "AUTHOR_SUFFIX": " - 茗伊 (译)"
 }

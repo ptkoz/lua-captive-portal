@@ -1,4 +1,6 @@
 {
+  "FC Visitors - Captive Portal": "FC Goście - Captive Portal",
+  "FC visitors captive portal": "FC Goście captive portal",
   "FC Visitors": "FC Goście",
   "Log in": "Logowanie",
   "Why token instead of password": "Dlaczego token zamiast hasła",
@@ -36,5 +38,6 @@
   "Return to login page": "Wróć do strony logowania",
   "Next": "Dalej",
   "Enter your token": "Wpisz swój token",
-  "FOOTER_SUFFIX": ""
+  "AUTHOR": "Patryk Kozłowski",
+  "AUTHOR_SUFFIX": ""
 }
