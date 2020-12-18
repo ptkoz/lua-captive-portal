@@ -1,7 +1,7 @@
 version: '2'
 services:
-  lua:
-    image: pamelus/gentoo-lua
+  api:
+    build: build
     ports:
       - "80:80"
     volumes:
