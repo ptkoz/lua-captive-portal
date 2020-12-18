@@ -9,7 +9,7 @@ RUN apt-get update && \
 
 COPY config/*.conf /etc/lighttpd/
 
-RUN mkdir -p /var/www/sqlite && chown -R lighttpd:lighttpd /var/www/sqlite
+RUN mkdir -p /var/lib/sqlite && chown -R lighttpd:lighttpd /var/lib/sqlite
 
 EXPOSE 80
 VOLUME /var/www/localhost

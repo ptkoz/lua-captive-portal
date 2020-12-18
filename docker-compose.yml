@@ -3,6 +3,6 @@ services:
   api:
     build: build
     ports:
-      - "6717:80"
+      - "6820:80"
     volumes:
       - .:/var/www/localhost
