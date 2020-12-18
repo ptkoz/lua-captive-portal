@@ -2,7 +2,7 @@
 local language = {};
 
 local function loadLangPack(lang)
-    local status, res = pcall(require, "language/" .. lang)
+    local status, res = pcall(require, "language/" .. string.lower(lang))
     if status and type(res) == "table" then
         local lang = {}
         for k, v in pairs(res) do
