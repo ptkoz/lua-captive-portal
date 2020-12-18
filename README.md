@@ -18,11 +18,21 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
    default.
 
 2. Enable forwarding for validated guests by adding new traffic rule:
+    * Address family: IPv4 and IPv6 
 	* Protocol: any
 	* Source zone: guest
 	* Destination zone: wan
 	* Action: accept
 	* Extra arguments: `-m mark --mark 0x2/0xf`
+
+3. Allow unvalidated guest to see captive portal:
+    * Address family: IPv4 and IPv6
+    * Protocol: tcp
+    * Source zone: guest
+    * Destination zone: Device (input)
+    * Destination port: 6820-6822  
+    * Action: accept
+    * Extra arguments: `-m mark --mark 0x0/0xf`
 
 3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone are able to
    connect and see captive portal.
@@ -41,8 +51,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2/0xf -j RETURN
 
 	# Allow guests to display captive portal
-	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -m addrtype --dst-type LOCAL -j RETURN
-    iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
+	iptables -t nat -A prerouting_guest_rule -p tcp --dport 6820:6822 -m addrtype --dst-type LOCAL -j RETURN
 
 	# Handle all HTTP traffic by the router itself
 	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -j REDIRECT --to-ports 6821
@@ -57,7 +66,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	ip6tables -t mangle -A PREROUTING -i br-guest -j redirect_guests
 	
 	ip6tables -t mangle -A redirect_guests -m mark --mark 0x2/0xf -j RETURN
-	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 6820:6822 -m addrtype --dst-type LOCAL -j RETURN
 	ip6tables -t mangle -A redirect_guests -p tcp --dport 80 -j TPROXY --on-port 6821
 	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -j TPROXY --on-port 6821
 	```
