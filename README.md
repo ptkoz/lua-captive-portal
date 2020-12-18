@@ -70,7 +70,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
     ```
    
 6. Clone this repository and upload its contents to a known path on your router (eg. `/captive/api`), so that `/captive/api/public_html/captive.lua`
-   file exists.
+   file exists. On Linux & MacOS you can use deployment script attached: `./deploy.sh root@192.168.1.1:/captive/api`. 
  
 7. Clone [Captive Frontend](https://github.com/pamelus/captive-frontend), build it (see captive frontend's readme) and
    upload its `public_html` directory contents to a known path on your router (eg. `/captive/frontend`), so that `/captive/frontend/index.html`
