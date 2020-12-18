@@ -9,11 +9,9 @@ if [[ "$1" == "" ]]; then
 fi
 
 TARGET="${1}"
-SOURCE=$( realpath "$( dirname $(realpath "$0") )/.." )
+SOURCE="$( dirname "$0")/.."
 
-rsync -rlpt --progress --exclude='.git*' --filter="dir-merge,- .gitignore" "${SOURCE}/backend" "${TARGET}/"
-rsync -rlpt --progress --exclude='.git*' --filter="dir-merge,- .gitignore" "${SOURCE}/bin" "${TARGET}/"
-rsync -rlpt --progress --exclude='.git*' --filter="dir-merge,- .gitignore" "${SOURCE}/gateway" "${TARGET}/"
-rsync -rlpt --progress --exclude='.git*' --filter="dir-merge,- .gitignore" "${SOURCE}/public_html" "${TARGET}/"
-rsync -rlpt --progress --exclude='.git*' --exclude='deploy.sh' --filter="dir-merge,- .gitignore" "${SOURCE}/devops" "${TARGET}/"
-ssh ${TARGET_AUTH} sed -ie "s/{DOMAIN}/${DOMAIN}/" ${TARGET_PATH}/gateway/index.html
+scp -r "${SOURCE}/src" "${TARGET}/src"
+scp -r "${SOURCE}/bin" "${TARGET}/bin"
+scp -r "${SOURCE}/public_html" "${TARGET}/public_html"
+scp -r "${SOURCE}/init.d" "${TARGET}/init.d"
