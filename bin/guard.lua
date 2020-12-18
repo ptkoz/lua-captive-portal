@@ -5,10 +5,10 @@
 -- sessions table stored in database.
 
 local dirname = string.gsub(arg[0], "(.*)/(.*)", "%1");
-package.path = package.path .. ";" .. dirname .. "/../vendor/?.lua;" .. dirname .. "/../backend/?.lua";
+package.path = package.path .. ";" .. dirname .. "/../src/?.lua";
 
 -- bootstrap application (to have database), but not run
-require "application".bootstrap(dirname .. "/../backend");
+require "application".bootstrap(dirname .. "/../src");
 
 local Session = require "models.session";
 local Arp = require "models.arp";

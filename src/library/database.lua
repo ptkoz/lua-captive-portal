@@ -7,7 +7,6 @@ local Instance = {};
 Instance.__index = Instance;
 
 local sqlite3 = assert( require("luasql.sqlite3") );
-local nixio = assert( require("nixio") );
 
 local dbenv = assert( sqlite3.sqlite3() );
 local connections = { };
@@ -59,7 +58,12 @@ function Database.getDatabase(dbfile, setDefault)
     end
 
     if nil == connections[dbfile] then
-        if "reg" ~= nixio.fs.stat(dbfile, "type") then
+        function file_exists(name)
+            local f=io.open(name,"r")
+            if f~=nil then io.close(f) return true else return false end
+        end
+
+        if not file_exists(dbfile) then
             initRequired = true;
         end
 

@@ -44,7 +44,15 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	# Create allowed guests chain
 	iptables -t mangle -N allowed_guests
 	iptables -t mangle -A PREROUTING -i guest -j allowed_guests
-
+ 
+ 	# Add redirections also for IPv6
+	ip6tables -t mangle -N redirect_guests
+	ip6tables -t mangle -A PREROUTING -i br-guest -j redirect_guests
+	
+	ip6tables -t mangle -A redirect_guests -m mark --mark 0x2/0xf -j RETURN
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 80 -j TPROXY --on-port 1080
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -j TPROXY --on-port 1043
 	```
 
 5. Upload `lua-captive-portal` to some path on your router (eg. `/captive`). Install captive portal requirements:
@@ -111,17 +119,3 @@ docker-compose up
 ```
 
 Docker container binds localhost port 80 to lua CGI application, so simply go to `http://localhost` to see portal working.
-
-If you want to build frontend you will also need node.js and yarn / npm. For production build use:
-```bash
-cd frontend
-yarn install
-yarn build
-```
-
-For development you may want to enable continuous compilation with source maps. Enable it like this:
-```bash
-cd frontend
-yarn install
-yarn watch
-```

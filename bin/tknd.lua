@@ -2,14 +2,14 @@
 
 -- This is lua controlling unit daemon for tokenizer device.
 -- It receives tokens generated in avr-token-generator, validates
--- them and then - eventually - puts in applicstion database ready
+-- them and then - eventually - puts in application database ready
 -- to use.
 
 local dirname = string.gsub(arg[0], "(.*)/(.*)", "%1");
-package.path = package.path .. ";" .. dirname .. "/../vendor/?.lua;" .. dirname .. "/../backend/?.lua";
+package.path = package.path .. ";" .. dirname .. "/../src/?.lua";
 
 -- bootstrap application (to have database), but not run
-require "application".bootstrap(dirname .. "/../backend");
+require "application".bootstrap(dirname .. "/../src");
 
 local Token = require("models.token");
 local Session = require("models.session");
