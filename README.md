@@ -118,7 +118,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 9. Link & enable init script that validates guest and restores sessions upon boot.
 
 ```bash
-	ln -s /captive/devops/init.d/captive /etc/init.d/captive
+	ln -s /captive/api/init.d/captive /etc/init.d/captive
 	/etc/init.d/captive enable
 	/etc/init.d/captive start
 ```
