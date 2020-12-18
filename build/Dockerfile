@@ -15,3 +15,4 @@ EXPOSE 80
 VOLUME /var/www/localhost
 
 ENTRYPOINT ["/usr/sbin/lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+WORKDIR /var/www/localhost

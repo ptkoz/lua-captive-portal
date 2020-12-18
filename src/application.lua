@@ -59,7 +59,9 @@ function Application.dispatch(controller, action)
     -- create handler
     local handlerInstance = handler.new();
     handlerInstance:preAction();
-    handlerInstance[action](handlerInstance);
+    if "OPTIONS" ~= os.getenv("REQUEST_METHOD") then
+        handlerInstance[action](handlerInstance);
+    end
     handlerInstance:postAction();
     handlerInstance:sendResponse();
 

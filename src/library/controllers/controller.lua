@@ -13,6 +13,7 @@ function Controller.new()
     self.responseHeaders = {
         ["Status"] = "200 OK",
         ["Cache-Control"] = "no-store, no-cache, must-revalidate",
+        ["Access-Control-Allow-Origin"] = "*",
         ["Pragma"] = "no-cache",
         ["Expires"] = "Thu, 19 Nov 1981 08:52:00 GMT",
         ["Date"] = os.date("%a, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t"))),

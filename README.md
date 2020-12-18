@@ -107,20 +107,14 @@ To list active sessions use `/etc/init.d/captive list`.
 ## API Specification
 
 API allows you to authorize users by token. To do so, send a POST request under to `http://ROUTER_IP/captive.lua/auth/token`
-with following JSON body:
-
-```json
-{ "token": "entered token" }
-```
-
-It will responsd with 200 status code on success, ot one of 4xx status codes on failure, both with a textual status
-summary.
+with `token` specified as form data. It responds with 200 status code on success, or one of 4xx status codes on failure,
+both with a textual status summary.
 
 ## Captive Portal Frontend
 
 There's another project that [provides captive portal frontend](https://github.com/pamelus/captive-frontend). You can
 use it if you don't want to build your own
-front-end.
+frontend.
 
 ## Development requirements
 All you need is text editor and latest docker compose. You can run application locally by simply:
