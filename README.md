@@ -1,9 +1,10 @@
 # Captive portal for OpenWRT written in LUA
 
 ## Overview
-This is simple captive portal used by me in conjunction with my [AVR token generator](https://github.com/pamelus/avr-token-generator)
-for [OpenWRT](http://openwrt.org/). It provides API token authentication and a controlling unit for avr-token-generator.
-Appropriate firewall rules are created automatically. Internet access is given per MAC address after successful token validation.
+This is simple captive portal used by me in conjunction with my [Captive Portal Frontend](https://github.com/pamelus/captive-frontend)
+and [AVR token generator](https://github.com/pamelus/avr-token-generator) for [OpenWRT](http://openwrt.org/). It provides
+token authentication API and a controlling unit for AVR Token Generator. Appropriate firewall rules are created automatically.
+Internet access is given per MAC address after successful token validation.
 
 [![View demo video](https://img.youtube.com/vi/p0FRlCpmJHw/0.jpg)](https://www.youtube.com/watch?v=p0FRlCpmJHw)
 
@@ -23,12 +24,12 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	* Action: accept
 	* Extra arguments: `-m mark --mark 0x2/0xf`
 
-3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone will be able to
+3. Disable password protection (`Encryption: No Encryption` in "Wireless Security" tab), so everyone are able to
    connect and see captive portal.
 
 4. Add custom firewall rules required by captive portal. You will need to install `iptables-mod-extra` if you have not
    do so yet.
-	```
+	```bash
 	opkg update
 	opkg install iptables-mod-extra ip6tables-extra
 	```
@@ -40,11 +41,12 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	iptables -t nat -A prerouting_guest_rule -m mark --mark 0x2/0xf -j RETURN
 
 	# Allow guests to display captive portal
-	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
+	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -m addrtype --dst-type LOCAL -j RETURN
+    iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
 
-	# Redirect http traffic to gateway
-	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -j REDIRECT --to-ports 1080
-	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -j REDIRECT --to-ports 1043
+	# Handle all HTTP traffic by the router itself
+	iptables -t nat -A prerouting_guest_rule -p tcp --dport 80 -j REDIRECT --to-ports 6821
+	iptables -t nat -A prerouting_guest_rule -p tcp --dport 443 -j REDIRECT --to-ports 6821
 
 	# Create allowed guests chain
 	iptables -t mangle -N allowed_guests
@@ -56,30 +58,38 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 	
 	ip6tables -t mangle -A redirect_guests -m mark --mark 0x2/0xf -j RETURN
 	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -m addrtype --dst-type LOCAL -j RETURN
-	ip6tables -t mangle -A redirect_guests -p tcp --dport 80 -j TPROXY --on-port 1080
-	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -j TPROXY --on-port 1043
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 80 -j TPROXY --on-port 6821
+	ip6tables -t mangle -A redirect_guests -p tcp --dport 443 -j TPROXY --on-port 6821
 	```
 
-5. Upload `lua-captive-portal` to some path on your router (eg. `/captive`). Install captive portal requirements:
+5. Install captive portal requirements:
 
-    ```
+    ```bash
     opkg update
     opkg install libsqlite3 luasql-sqlite3
     ```
    
-6. Create `/var/lib/sqlite` to hold your database files. Database files aren't big, they rarely take more than 100kb, but
+6. Clone this repository and upload its contents to a known path on your router (eg. `/captive/api`), so that `/captive/api/public_html/captive.lua`
+   file exists.
+ 
+7. Clone [Captive Frontend](https://github.com/pamelus/captive-frontend), build it (see captive frontend's readme) and
+   upload its `public_html` directory contents to a known path on your router (eg. `/captive/frontend`), so that `/captive/frontend/index.html`
+   file exist. 
+
+7. Create `/var/lib/sqlite` to hold your database files. Database files aren't big, they rarely take more than 100kb, but
    if you're concerned about root disk space, you can change the location by modifying `APPLICATION_DB` in 
    [src/application.lua](src/application.lua)
 
-6. Create uhttpd configuration like this. Please bear in mind this example configuration relies on **UNENCRYPTED**
+8. Create uhttpd configuration like this. Please bear in mind this example configuration relies on **UNENCRYPTED**
    traffic, so it's not secure - anyone will be able to sniff entered tokens. Use SSL (eg. from Let's encrypt) to
    address that issue.
+   
 	```text
-	config uhttpd 'auth'
+	config uhttpd 'captive_api'
 		list listen_http '0.0.0.0:6820'
 		list listen_http '[::]:6820'
 		option redirect_https '0'
-		option home '/captive/public_html'
+		option home '/captive/api/public_html'
 		option rfc1918_filter '0'
 		option max_requests '3'
 		option max_connections '100'
@@ -88,11 +98,24 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
 		option network_timeout '30'
 		option http_keepalive '20'
 		option tcp_keepalive '1'
+ 
+    config uhttpd 'captive_frontend'
+		list listen_http '0.0.0.0:6821'
+		list listen_http '[::]:6821'
+		option home '/captive/frontend'
+		option rfc1918_filter '0'
+		option max_requests '3'
+		option max_connections '100'
+		option network_timeout '30'
+		option http_keepalive '20'
+		option tcp_keepalive '1'
+		option error_page '/index.html'
 	```
 
-	And restart uhttpd by `/etc/init.d/uhttpd restart`
+	And restart uhttpd by `/etc/init.d/uhttpd restart`. Have you noticed listen port numbers for frontend match port
+    numbers we redirected the traffic to when we were defining firewall rules? 
 
-7. Link & enable init script that validates guest and restores sessions upon boot.
+9. Link & enable init script that validates guest and restores sessions upon boot.
 
 ```bash
 	ln -s /captive/devops/init.d/captive /etc/init.d/captive
@@ -109,12 +132,6 @@ To list active sessions use `/etc/init.d/captive list`.
 API allows you to authorize users by token. To do so, send a POST request under to `http://ROUTER_IP/captive.lua/auth/token`
 with `token` specified as form data. It responds with 200 status code on success, or one of 4xx status codes on failure,
 both with a textual status summary.
-
-## Captive Portal Frontend
-
-There's another project that [provides captive portal frontend](https://github.com/pamelus/captive-frontend). You can
-use it if you don't want to build your own
-frontend.
 
 ## Development requirements
 All you need is text editor and latest docker compose. You can run application locally by simply:
