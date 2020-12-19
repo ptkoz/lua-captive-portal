@@ -16,7 +16,7 @@ function Controller.new()
         ["Access-Control-Allow-Origin"] = "*",
         ["Pragma"] = "no-cache",
         ["Expires"] = "Thu, 19 Nov 1981 08:52:00 GMT",
-        ["Date"] = os.date("%a, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t"))),
+        ["Date"] = os.date("!%a, %d %b %Y %H:%M:%S GMT"),
         ["Content-Type"] = "text/html; charset=UTF-8"
     }
 
@@ -59,7 +59,7 @@ end
 function Controller:enableBrowserCache()
     self:setResponseHeader("Cache-Control", "cache");
     self:setResponseHeader("Pragma", "cache");
-    self:setResponseHeader("Expires", os.date("%s, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t")) + 600));
+    self:setResponseHeader("Expires", os.date("!%s, %d %b %Y %H:%M:%S GMT", os.time() + 600));
 end
 
 -- Redorect user to given url with given redirection code.
