@@ -11,7 +11,7 @@ APPLICATION_DB = "";
 -- Bootstrap application. Init global variables and environment.
 function Application.bootstrap(applicationPath)
     APPLICATION_PATH = applicationPath;
-    APPLICATION_DB = "/var/lib/sqlite/captive.db";
+    APPLICATION_DB = "/lib/sqlite/captive.db";
 
     -- connect to sqlite db file.
     local db, initDb = Database.getDatabase(APPLICATION_DB, true);

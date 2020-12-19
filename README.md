@@ -85,7 +85,7 @@ Once you gave your guest WLAN and firewall zone (`guest`) prepare it to use with
    upload its `public_html` directory contents to a known path on your router (eg. `/captive/frontend`), so that `/captive/frontend/index.html`
    file exist. 
 
-7. Create `/var/lib/sqlite` to hold your database files. Database files aren't big, they rarely take more than 100kb, but
+7. Create `/lib/sqlite` to hold your database files. Database files aren't big, they rarely take more than 100kb, but
    if you're concerned about root disk space, you can change the location by modifying `APPLICATION_DB` in 
    [src/application.lua](src/application.lua)
 
