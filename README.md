@@ -8,7 +8,13 @@ Internet access is given per MAC address after successful token validation.
 
 [![View demo video](https://img.youtube.com/vi/p0FRlCpmJHw/0.jpg)](https://www.youtube.com/watch?v=p0FRlCpmJHw)
 
+
+
 ## Running captive portal on OpenWRT
+
+Please note this captive portal currently works only with firewall3. Since OpenWRT 22.03, OpenWRT uses firewal4 (nftables) by default. firewall4 is not yet
+supported by this captive portal.
+
 You need to configure your OpenWRT a bit to make magic happen. This guide assumes that you have already
 [configured a guest WLAN on your device](https://wiki.openwrt.org/doc/recipes/guest-wlan-webinterface).
 
